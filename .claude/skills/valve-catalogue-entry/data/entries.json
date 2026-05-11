@@ -799,6 +799,125 @@
           "https://frank.pocnet.net/sheets/049/6/6AS8.pdf"
         ]
       ]
+    },
+    {
+      "id": "015",
+      "filename": "015-miniwatt-eab8.html",
+      "brand": "Miniwatt",
+      "code": "EAB8",
+      "category": "Other / TBD",
+      "function_tag": "Triple diode (signal + dual)",
+      "source": "boxes-3.jpg",
+      "crop": "entry-015-crop.jpeg",
+      "svg_key": "miniature-9pin-noval",
+      "lede": "<strong>EAB8</strong> is a 6.3 V–heated triple-diode valve on a 9-pin Noval (B9A) base, produced by Philips under the Miniwatt brand. Under the Mullard–Philips naming system, 'E' denotes a 6.3 V parallel heater, 'A' a single signal diode, 'B' a dual diode with common cathode, and '8' the Noval base series — making this a three-diode combination valve. It is a niche type rarely listed in general catalogues and should be physically verified; the printed code on the crop is small and pixelated.",
+      "country": "Netherlands (Philips / Miniwatt, Eindhoven)",
+      "first_introduced": "c. 1955",
+      "era": "mid-1950s – mid-1960s",
+      "confidence_label": "Medium · code identified by model; crop is small / pixelated — physically verify",
+      "confidence_class": "medium",
+      "function": "Triple diode — one independent signal diode plus one common-cathode dual diode, all in a single noval envelope",
+      "envelope": "Miniature all-glass",
+      "envelope_detail": "Miniature all-glass noval envelope, ~22 mm diameter",
+      "base": "Noval (B9A)",
+      "base_detail": "Noval B9A, 9-pin miniature all-glass",
+      "heating": "Indirectly heated cathode, 6.3 V AC/DC, ~300 mA (typical for noval signal types of this era)",
+      "rating_1_label": "Max peak inverse voltage (signal diode section)",
+      "rating_1_value": "Consult datasheet — physically verify",
+      "rating_2_label": "Max forward current",
+      "rating_2_value": "Consult datasheet — physically verify",
+      "application_short": "AM/FM signal detection, AVC rectification, and ratio-detector circuits in European post-war radio receivers.",
+      "applications_prose": "The EAB8 triple-diode configuration allows a single valve to perform AM envelope detection, automatic gain control (AGC) rectification, and one branch of an FM ratio detector simultaneously. Such multi-diode noval valves were common in compact European AC-mains radio designs of the 1950s that needed to minimise valve count. The independent cathode on the 'A' diode section allows it to float at a different potential from the common-cathode 'B' pair, enabling simultaneous AM and FM detection duties.",
+      "direct_equivs": [],
+      "substitutes": [],
+      "value_range": "<span class=\"ccy\">AUD</span> $8 – $20",
+      "value_note": "NOS, boxed, single tube — uncommon type; limited market data",
+      "value_prose": "Market data for EAB8 specifically is extremely sparse; the estimate is derived by analogy with similar rare Miniwatt noval multi-diode types of the same era. If the box code resolves on physical inspection to the much commoner EABC80 (triple diode-triode), values rise modestly to roughly AUD $10–$25 NOS boxed.",
+      "sources": [
+        [
+          "Mullard–Philips tube designation — Wikipedia",
+          "https://en.wikipedia.org/wiki/Mullard%E2%80%93Philips_tube_designation"
+        ],
+        [
+          "List of Mullard–Philips vacuum tubes — Wikipedia",
+          "https://en.wikipedia.org/wiki/List_of_Mullard%E2%80%93Philips_vacuum_tubes"
+        ],
+        [
+          "Double diode triode — Wikipedia",
+          "https://en.wikipedia.org/wiki/Double_diode_triode"
+        ],
+        [
+          "Philips factory valve codes (frank.pocnet.net)",
+          "https://frank.pocnet.net/other/Philips/PhilipsCodeListAB.pdf"
+        ]
+      ]
+    },
+    {
+      "id": "016",
+      "filename": "016-miniwatt-7dj8.html",
+      "brand": "Miniwatt",
+      "code": "7DJ8",
+      "category": "RF / IF pentodes",
+      "function_tag": "Dual triode (VHF / audio)",
+      "source": "boxes-3.jpg",
+      "crop": "entry-016-crop.jpeg",
+      "svg_key": "miniature-9pin-noval",
+      "lede": "<strong>7DJ8</strong> (European designation <strong>PCC88</strong>) is a miniature 9-pin Noval dual triode with frame-grid construction, 7 V series heater, and exceptionally high transconductance of ~12,500 µmhos. Developed by Philips in the late 1950s as the series-heater counterpart of the <strong>ECC88</strong> / <strong>6DJ8</strong>, it was designed primarily for VHF cascode RF amplifier stages in television tuners. It has since become highly sought-after in high-end audio preamplifier applications.",
+      "country": "Netherlands (Philips / Miniwatt, Eindhoven); also made under licence in Belgium, Yugoslavia, Japan (Matsushita/National), Hungary (Tungsram), and Germany (Valvo/Siemens)",
+      "first_introduced": "1957",
+      "era": "1957 – 1970s (production); NOS market continues",
+      "confidence_label": "Medium · code identified by model; crop is small / pixelated — physically verify",
+      "confidence_class": "medium",
+      "function": "High-transconductance dual triode for VHF cascode amplification and audio preamplification",
+      "envelope": "Miniature all-glass",
+      "envelope_detail": "Miniature all-glass noval envelope, ~19 mm diameter × ~55 mm",
+      "base": "Noval (B9A)",
+      "base_detail": "Noval B9A, 9-pin miniature all-glass, with internal shield between triode sections on pin 9",
+      "heating": "Indirectly heated cathode, 7.0 V AC, 310 mA (series-heater string design)",
+      "rating_1_label": "Max plate voltage",
+      "rating_1_value": "300 V",
+      "rating_2_label": "Max plate dissipation (per section)",
+      "rating_2_value": "2.5 W",
+      "application_short": "VHF TV tuner cascode RF amplifier and drop-in upgrade for ECC88 / 6DJ8 / 6922 in audio preamplifiers.",
+      "applications_prose": "The 7DJ8/PCC88 was designed specifically for VHF television tuner cascode amplifier stages, where its low noise and high transconductance (~12,500 µmhos) gave it an advantage over earlier dual triodes. Its 7 V heater suited European series-heater television receiver designs. In contemporary high-end audio, it is widely used as a direct plug-in alternative to the 6DJ8/ECC88 and 6922/E88CC family — the 1 V heater difference is tolerated in most circuits — with Matsushita (National/Panasonic) and Philips Miniwatt examples particularly prized for their sonic character and build consistency.",
+      "direct_equivs": [
+        "PCC88"
+      ],
+      "substitutes": [
+        "ECC88",
+        "6DJ8",
+        "6922",
+        "E88CC"
+      ],
+      "value_range": "<span class=\"ccy\">AUD</span> $25 – $60",
+      "value_note": "NOS, boxed, single tube — Miniwatt / Philips Holland provenance",
+      "value_prose": "Recent eBay sold listings show NOS Tungsram and Yugoslav-made examples fetching USD $15–$30 per tube, while Philips Miniwatt Holland examples command USD $25–$50 and premium brands (Siemens, Telefunken) can reach USD $60–$120. At a USD/AUD exchange rate of approximately 0.63, the AUD range for a typical Miniwatt-branded NOS boxed single is roughly AUD $25–$60, rising significantly for Telefunken or matched pairs.",
+      "sources": [
+        [
+          "7DJ8 / PCC88 — vacuumtubes.io",
+          "https://vacuumtubes.io/tube/7DJ8"
+        ],
+        [
+          "PCC88/7DJ8 — ECC88/6DJ8 with 7V heater (Watford Valves)",
+          "https://www.watfordvalves.com/product_detail.asp?id=4825"
+        ],
+        [
+          "6DJ8 — Wikipedia",
+          "https://en.wikipedia.org/wiki/6DJ8"
+        ],
+        [
+          "List of Mullard–Philips vacuum tubes — Wikipedia",
+          "https://en.wikipedia.org/wiki/List_of_Mullard%E2%80%93Philips_vacuum_tubes"
+        ],
+        [
+          "Philips PCC88 (7DJ8) — The Tube Store",
+          "https://www.thetubestore.com/philips-pcc88-7dj8"
+        ],
+        [
+          "NOS Tungsram PCC88 7DJ8 eBay listing (price reference)",
+          "https://www.ebay.com/itm/195261397825"
+        ]
+      ]
     }
   ]
 }

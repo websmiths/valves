@@ -58,6 +58,8 @@ ambiguous codes, and the HTML template it writes against.
 | 012 | **5BK7B** | RCA | Medium-mu twin triode, oscillator/mixer (Miniature glass (T-6½)) | `boxes-2.jpg` | 1 |
 | 013 | **6CU5** | RCA | Beam power amplifier (audio output) (Miniature glass (T-5½)) | `boxes-2.jpg` | 1 |
 | 014 | **6AS8** | RCA | Single diode + sharp-cutoff RF/IF pentode (Miniature glass (T-6½)) | `boxes-2.jpg` | 1 |
+| 015 | **EAB8** | Miniwatt | Triple diode — one independent signal diode plus one common-cathode dual diode, all in a single noval envelope (Miniature all-glass) | `boxes-3.jpg` | 1 |
+| 016 | **7DJ8** | Miniwatt | High-transconductance dual triode for VHF cascode amplification and audio preamplification (Miniature all-glass) | `boxes-3.jpg` | 1 |
 <!-- AUTOGEN_STATUS_END -->
 
 Second sweep of `boxes-1.jpeg` covers everything I could read with at
