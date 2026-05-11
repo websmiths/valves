@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Submit a Photo — Valves Catalogue</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="worker-url" content="https://valves-submission.julian-86f.workers.dev">
+<style>
+  :root {
+    --bg: #fafaf7; --ink: #1d1d1b; --muted: #6b6b66;
+    --line: #d9d4c7; --accent: #8a1c1c; --accent-soft: #f3e7e7;
+    --card: #ffffff;
+    --ok: #1f4a1f; --ok-soft: #eef5ee;
+    --warn: #6a4a08; --warn-soft: #fff6e1;
+    --err: #7a1c1c; --err-soft: #fdecec;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 48px 24px 80px;
+    font-family: "Helvetica Neue", "Inter", system-ui, sans-serif;
+    background: var(--bg); color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 640px; margin: 0 auto; }
+  .eyebrow {
+    font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 8px;
+  }
+  h1 {
+    margin: 0 0 12px; font-size: 44px; font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+  h1 .accent { color: var(--accent); }
+  .lede {
+    color: var(--muted); font-size: 16px; line-height: 1.6;
+    margin: 0 0 32px;
+  }
+  form {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 6px; padding: 24px;
+    display: flex; flex-direction: column; gap: 18px;
+  }
+  label { display: block; }
+  label .l {
+    font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 6px; font-weight: 700;
+  }
+  input[type="file"] {
+    width: 100%; padding: 10px; border: 1px dashed var(--line);
+    background: var(--bg); border-radius: 4px; font: inherit; cursor: pointer;
+  }
+  input[type="file"]::file-selector-button {
+    margin-right: 12px; padding: 6px 12px; border: 1px solid var(--line);
+    background: var(--card); color: var(--ink); border-radius: 4px;
+    font: inherit; cursor: pointer;
+  }
+  textarea {
+    width: 100%; padding: 10px; border: 1px solid var(--line);
+    background: var(--bg); border-radius: 4px; font: inherit;
+    resize: vertical; min-height: 70px; color: var(--ink);
+  }
+  textarea:focus, input[type="file"]:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  button {
+    padding: 12px 18px; border: 0; border-radius: 4px;
+    background: var(--accent); color: white;
+    font: inherit; font-weight: 600; cursor: pointer;
+    letter-spacing: 0.02em;
+  }
+  button:disabled { background: #b88282; cursor: not-allowed; }
+  button:hover:not(:disabled) { background: #6e1616; }
+  .status {
+    padding: 14px 16px; border-radius: 4px;
+    font-size: 14px; line-height: 1.5;
+    display: none;
+  }
+  .status.show { display: block; }
+  .status.info  { background: #f1efe8; color: var(--ink); border: 1px solid var(--line); }
+  .status.ok    { background: var(--ok-soft);   color: var(--ok);   border: 1px solid #c8dfc8; }
+  .status.warn  { background: var(--warn-soft); color: var(--warn); border: 1px solid #ecd99a; }
+  .status.err   { background: var(--err-soft);  color: var(--err);  border: 1px solid #f0c5c5; }
+  .status .id { font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+                font-size: 12px; opacity: 0.85; }
+  .preview {
+    display: none; margin-top: 4px;
+    max-width: 100%; max-height: 240px; border-radius: 4px;
+    border: 1px solid var(--line); object-fit: contain;
+    background: var(--bg);
+  }
+  .preview.show { display: block; }
+  .footnote {
+    margin-top: 24px; font-size: 12px; color: var(--muted);
+    line-height: 1.55;
+  }
+  .footnote a { color: var(--accent); text-decoration: none; }
+  .footnote a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow">Component Catalogue · Submission</div>
+  <h1>New boxes<span class="accent">.</span></h1>
+  <p class="lede">
+    Drop a photo of some valve boxes and the catalogue will update itself.
+    A few minutes after submission, new entries appear on
+    <a href="index.html" style="color:var(--accent);">the catalogue</a>
+    for each box that can be identified. Each photo also gets a brief
+    note field if there's anything worth recording about where the boxes
+    came from.
+  </p>
+
+  <form id="form">
+    <label>
+      <span class="l">Photo</span>
+      <input id="image" type="file" name="image" accept="image/*" required>
+    </label>
+
+    <img id="preview" class="preview" alt="Preview of the chosen photo">
+
+    <label>
+      <span class="l">Note (optional)</span>
+      <textarea id="note" name="note" maxlength="1000"
+        placeholder="Where did you find these? Anything worth knowing about the boxes?"></textarea>
+    </label>
+
+    <input id="secret" type="hidden" name="secret" value="6ee90873994352837dce9711d69305db">
+
+    <button id="submit" type="submit">Submit</button>
+  </form>
+
+  <div id="status" class="status info" role="status" aria-live="polite"></div>
+
+  <p class="footnote">
+    Submissions are reviewed before they appear on the catalogue — there's
+    a short delay between hitting Submit and the entries going live.
+    <br>
+    <a href="index.html">← Back to the catalogue</a>
+  </p>
+
+</div>
+
+<script>
+(function () {
+  const form    = document.getElementById('form');
+  const fileEl  = document.getElementById('image');
+  const noteEl  = document.getElementById('note');
+  const btn     = document.getElementById('submit');
+  const status  = document.getElementById('status');
+  const preview = document.getElementById('preview');
+  const workerUrl = document.querySelector('meta[name="worker-url"]').content;
+
+  function show(kind, html) {
+    status.className = 'status show ' + kind;
+    status.innerHTML = html;
+  }
+  function hide() {
+    status.className = 'status';
+    status.innerHTML = '';
+  }
+
+  fileEl.addEventListener('change', () => {
+    const file = fileEl.files && fileEl.files[0];
+    if (!file) { preview.classList.remove('show'); return; }
+    preview.src = URL.createObjectURL(file);
+    preview.classList.add('show');
+    hide();
+  });
+
+  // Resize an image File to JPEG with longest edge <= maxEdge, returning a Blob.
+  async function resize(file, maxEdge, quality) {
+    const bitmap = await createImageBitmap(file);
+    const scale = Math.min(1, maxEdge / Math.max(bitmap.width, bitmap.height));
+    const w = Math.round(bitmap.width * scale);
+    const h = Math.round(bitmap.height * scale);
+    const canvas = document.createElement('canvas');
+    canvas.width = w; canvas.height = h;
+    canvas.getContext('2d').drawImage(bitmap, 0, 0, w, h);
+    return await new Promise(res => canvas.toBlob(res, 'image/jpeg', quality));
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const file = fileEl.files && fileEl.files[0];
+    if (!file) { show('err', 'Pick a photo first.'); return; }
+    if (workerUrl.includes('example.workers.dev')) {
+      show('warn', 'This form is not wired up yet — the catalogue owner needs to set the Worker URL. Submission is disabled.');
+      return;
+    }
+
+    btn.disabled = true;
+    show('info', 'Preparing image…');
+
+    let blob;
+    try {
+      blob = await resize(file, 2000, 0.85);
+    } catch (err) {
+      show('err', 'Could not read that image. Try a different file.');
+      btn.disabled = false;
+      return;
+    }
+    if (blob.size > 5 * 1024 * 1024) {
+      show('err', 'Image is still too large after resizing (>5 MB). Try a smaller photo.');
+      btn.disabled = false;
+      return;
+    }
+
+    const fd = new FormData();
+    fd.append('image', blob, 'submission.jpg');
+    fd.append('note',  noteEl.value || '');
+    fd.append('secret', document.getElementById('secret').value);
+
+    show('info', 'Uploading…');
+    let resp;
+    try {
+      resp = await fetch(workerUrl, { method: 'POST', body: fd });
+    } catch (err) {
+      show('err', 'Network error — check your connection and try again. <button id="retry" type="button" style="margin-left:8px;padding:4px 10px;font-size:12px;">Retry</button>');
+      document.getElementById('retry').addEventListener('click', () => form.dispatchEvent(new Event('submit', {cancelable:true})));
+      btn.disabled = false;
+      return;
+    }
+
+    let payload = {};
+    try { payload = await resp.json(); } catch (_) {}
+
+    if (resp.ok && payload.ok) {
+      show('ok',
+        'Submitted. Your entries will appear on the catalogue in a few minutes.' +
+        (payload.submission_id ? '<br><span class="id">id: ' + payload.submission_id + '</span>' : '')
+      );
+      form.reset();
+      preview.classList.remove('show');
+    } else if (resp.status === 403) {
+      show('err', 'Submission was rejected (wrong key). Check with the catalogue owner that the URL is current.');
+    } else {
+      show('err', 'Submission failed: ' + (payload.error || resp.statusText || 'unknown error') + '.');
+    }
+    btn.disabled = false;
+  });
+})();
+</script>
+
+</body>
+</html>

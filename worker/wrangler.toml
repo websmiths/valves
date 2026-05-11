@@ -1,0 +1,12 @@
+name = "valves-submission"
+main = "src/index.ts"
+compatibility_date = "2025-05-01"
+
+[vars]
+GITHUB_REPO = "websmiths/valves"
+GITHUB_BRANCH = "main"
+ALLOWED_ORIGIN = "https://websmiths.github.io"
+
+# Secrets (set via `npx wrangler secret put NAME`, do NOT commit values):
+#   SUBMISSION_SECRET — must match the value baked into submit.html
+#   GITHUB_TOKEN      — fine-grained PAT, websmiths/valves, Contents: read & write
