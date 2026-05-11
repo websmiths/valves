@@ -41,18 +41,20 @@ ambiguous codes, and the HTML template it writes against.
 
 ## Current status
 
-| # | Code        | Brand           | Type                                            | Source image    | Count |
-|---|-------------|-----------------|-------------------------------------------------|-----------------|-------|
-| 001 | **5Z3**   | RCA             | Full-wave rectifier (UX4)                       | `boxes-1.jpeg`  | 1     |
-| 002 | **80**    | Radiotron       | Full-wave rectifier (UX4, pre-octal 5Y3)        | `boxes-1.jpeg`  | 4     |
-| 003 | **78**    | Radiotron       | Variable-mu RF/IF pentode (6-pin)               | `boxes-1.jpeg`  | 1     |
-| 004 | **6D6**   | Super Radiotron | Variable-mu RF/IF pentode (6-pin)               | `boxes-1.jpeg`  | ≈ 5   |
-| 005 | **6C6**   | Radiotron       | Sharp-cutoff RF / detector pentode (6-pin)      | `boxes-1.jpeg`  | 1     |
-| 006 | **6X5GT** | Radiotron       | Full-wave rectifier (octal, 6.3 V)              | `boxes-1.jpeg`  | 1     |
-| 007 | **KT66**  | G.E.C.          | Beam-tetrode audio output valve (octal)         | `boxes-1.jpeg`  | 1     |
-| 008 | **6B7S**  | Radiotron       | Duo-diode pentode (det. + AVC + AF, 7-pin)      | `boxes-1.jpeg`  | ≈ 2   |
-| 009 | **6J7**   | Super Radiotron | Sharp-cutoff RF/IF pentode (octal, top cap)     | `boxes-1.jpeg`  | 1     |
-| 010 | **6J8G**  | Super Radiotron | Triode-heptode frequency converter (octal)      | `boxes-1.jpeg`  | 1     |
+<!-- AUTOGEN_STATUS_START -->
+| # | Code | Brand | Type | Source image | Count |
+|---|------|-------|------|--------------|-------|
+| 001 | **5Z3** | RCA | Full-wave vacuum rectifier (ST-shape) | `boxes-1.jpeg` | 1 |
+| 002 | **80** | Radiotron | Full-wave vacuum rectifier (ST-shape) | `boxes-1.jpeg` | 4 boxes present |
+| 003 | **78** | Radiotron | Remote-cutoff RF / IF pentode (variable-mu) (ST-shape) | `boxes-1.jpeg` | 1 |
+| 004 | **6D6** | Super Radiotron | Remote-cutoff RF / IF pentode (variable-mu) (ST-shape) | `boxes-1.jpeg` | ≈ 5 boxes present |
+| 005 | **6C6** | Radiotron | Sharp-cutoff RF / detector pentode (ST-shape) | `boxes-1.jpeg` | 1 |
+| 006 | **6X5GT** | Radiotron | Full-wave vacuum rectifier (indirectly heated) (GT-shape) | `boxes-1.jpeg` | 1 |
+| 007 | **KT66** | G.E.C. | Kinkless (beam) power tetrode (ST / coke-bottle, large) | `boxes-1.jpeg` | 1 |
+| 008 | **6B7S** | Radiotron | Duplex-diode sharp-cutoff pentode (ST-shape) | `boxes-1.jpeg` | ≈ 2 boxes present |
+| 009 | **6J7** | Super Radiotron | Sharp-cutoff RF / IF / detector pentode (octal) (ST / GT-shape) | `boxes-1.jpeg` | 1 |
+| 010 | **6J8G** | Super Radiotron | Triode-heptode frequency converter (mixer-oscillator) (G-shape (large ST)) | `boxes-1.jpeg` | 1 |
+<!-- AUTOGEN_STATUS_END -->
 
 Second sweep of `boxes-1.jpeg` covers everything I could read with at
 least medium confidence — adds the 6B7S duo-diode pentode, the octal
