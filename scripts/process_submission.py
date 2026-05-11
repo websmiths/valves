@@ -101,12 +101,15 @@ the data needed for a catalogue entry. Required fields:
   applications_prose    (str)  1-3 sentence prose paragraph
   direct_equivs         (list[str])  Same electricals AND same base
   substitutes           (list[str])  Same electricals, different base
-  value_range           (str)  Australian-dollar range, formatted with
-                                "AUD" prefix and an en-dash, e.g.
-                                "AUD 25 – AUD 60". Do not use "A$" — the
-                                catalogue uses the unambiguous "AUD" form.
-                                If primary pricing data is in another
-                                currency, convert at a recent typical rate.
+  value_range           (str)  Australian-dollar range with this exact
+                                HTML structure:
+                                  <span class="ccy">AUD</span> $25 – $60
+                                The "AUD" span renders as a small muted
+                                prefix; the dollar amounts use a "$"
+                                symbol. Use an en-dash (–), not a hyphen.
+                                Do NOT use "A$" — it's ambiguous.
+                                If pricing data is in another currency,
+                                convert at a recent typical rate.
   value_note            (str)  E.g. "NOS, boxed, single tube"
   value_prose           (str)  1-2 sentences on pricing nuance. If you
                                 converted from USD/GBP/EUR, mention the

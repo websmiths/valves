@@ -42,7 +42,7 @@
         "5X4G (octal)",
         "5T4"
       ],
-      "value_range": "AUD 25 – AUD 60",
+      "value_range": "<span class=\"ccy\">AUD</span> $25 – $60",
       "value_note": "NOS, boxed, single tube",
       "value_prose": "Used / tested pulls trade lower (AUD 10–25). RCA black-plate and JAN-CRC military variants command a premium. Less sought-after than the 5U4G because most modern amps use the octal base.",
       "sources": [
@@ -110,7 +110,7 @@
         "5Y3GT (octal)",
         "5T4"
       ],
-      "value_range": "AUD 20 – AUD 45",
+      "value_range": "<span class=\"ccy\">AUD</span> $20 – $45",
       "value_note": "NOS, boxed, single tube",
       "value_prose": "Common Australian-made AWV / Radiotron stock is at the lower end; early RCA mesh-plate or balloon-shape (UX-280) variants trade higher. Used / tested-good pulls AUD 8–20.",
       "sources": [
@@ -169,7 +169,7 @@
         "6K7 (octal, metal)",
         "6BA6 (B7G miniature)"
       ],
-      "value_range": "AUD 15 – AUD 30",
+      "value_range": "<span class=\"ccy\">AUD</span> $15 – $30",
       "value_note": "NOS, boxed, single tube",
       "value_prose": "Plentiful in vintage-radio circles, so prices stay modest. Used / tested-good pulls AUD 5–12. Premium for sealed RCA black-plate or Marconi-Osram examples.",
       "sources": [
@@ -226,7 +226,7 @@
         "6K7 (octal)",
         "EF39 (8-pin)"
       ],
-      "value_range": "AUD 15 – AUD 25",
+      "value_range": "<span class=\"ccy\">AUD</span> $15 – $25",
       "value_note": "NOS, boxed, single tube",
       "value_prose": "Common and cheap on the second-hand market — supply outstrips demand because most surviving radios already have one. Used pulls AUD 5–10. Boxed Australian-made Radiotron examples in original cartons (as here) carry a small collector premium.",
       "sources": [
@@ -281,7 +281,7 @@
         "6SJ7 (octal)",
         "EF37A (8-pin)"
       ],
-      "value_range": "AUD 15 – AUD 25",
+      "value_range": "<span class=\"ccy\">AUD</span> $15 – $25",
       "value_note": "NOS, boxed, single tube",
       "value_prose": "Roughly the same market as the 6D6 — common, plentiful, modestly priced. Used pulls AUD 5–10. The 6C6 is slightly scarcer than the 6D6 since fewer were needed per set.",
       "sources": [
@@ -338,7 +338,7 @@
         "EZ80 (B9A)",
         "EZ81 (B9A)"
       ],
-      "value_range": "AUD 15 – AUD 30",
+      "value_range": "<span class=\"ccy\">AUD</span> $15 – $30",
       "value_note": "NOS, boxed, single tube",
       "value_prose": "Common and widely available. Premium for early black-glass GT envelopes or Marconi-Osram \"red label\" examples. The closely-related 6X4 (B7G miniature) is the post-war replacement in compact sets.",
       "sources": [
@@ -395,7 +395,7 @@
         "5881",
         "7027A (with bias adjust)"
       ],
-      "value_range": "AUD 200 – AUD 400+",
+      "value_range": "<span class=\"ccy\">AUD</span> $200 – $400+",
       "value_note": "NOS, boxed, single tube · matched pairs higher",
       "value_prose": "Genuine GEC / M-O Valve KT66s in original GEC cartons are the premium tier: AUD 300 / pair is common on Aussie Audio Mart and matched quads run AUD 500–700. Reissue Genalex (New Sensor) tubes sell for AUD 80–120 each new and don't trade on the vintage market. Authenticate by the GEC etch on the glass and the brown micanol base — fakes exist.",
       "sources": [
@@ -455,7 +455,7 @@
         "6SQ7 (octal, diode-triode)",
         "EBF2 (8-pin)"
       ],
-      "value_range": "AUD 15 – AUD 30",
+      "value_range": "<span class=\"ccy\">AUD</span> $15 – $30",
       "value_note": "NOS, boxed, single tube",
       "value_prose": "Less common than the 6D6 / 6C6 but not rare. Boxed AWV Australian-made examples (as here) carry a small premium with vintage-radio restorers. Used pulls AUD 5–12.",
       "sources": [
@@ -511,7 +511,7 @@
         "6SJ7 (single-ended octal, no top cap)",
         "EF37A (8-pin)"
       ],
-      "value_range": "AUD 15 – AUD 30",
+      "value_range": "<span class=\"ccy\">AUD</span> $15 – $30",
       "value_note": "NOS, boxed, single tube",
       "value_prose": "Common and inexpensive. Premium for metal-envelope 6J7 (versus glass) and for JAN-CRC military variants. Used pulls AUD 5–12.",
       "sources": [
@@ -566,7 +566,7 @@
         "6BE6 (B7G miniature heptode)",
         "ECH81 (B9A)"
       ],
-      "value_range": "AUD 20 – AUD 40",
+      "value_range": "<span class=\"ccy\">AUD</span> $20 – $40",
       "value_note": "NOS, boxed, single tube",
       "value_prose": "Slightly less common than the 6D6 / 6C6 family because each set only used one. Used pulls AUD 8–15. Boxed Australian-made examples carry a modest collector premium.",
       "sources": [
@@ -619,7 +619,7 @@
         "6W6GT",
         "6CU5"
       ],
-      "value_range": "AUD 10 – AUD 30",
+      "value_range": "<span class=\"ccy\">AUD</span> $10 – $30",
       "value_note": "NOS, boxed, single tube",
       "value_prose": "The 6DB5 is a common television-era type with modest collector appeal; NOS RCA examples in original boxes command a small premium over tested pulls. Demand is primarily from vintage TV restorers.",
       "sources": [
@@ -670,7 +670,7 @@
         "5BK7A"
       ],
       "substitutes": [],
-      "value_range": "AUD 15 – AUD 40",
+      "value_range": "<span class=\"ccy\">AUD</span> $15 – $40",
       "value_note": "NOS, boxed, single tube",
       "value_prose": "The 5BK7B is a specialised television type with limited demand outside vintage TV restoration; RCA examples in original boxes are relatively scarce and attract modest premiums from collectors.",
       "sources": [
@@ -726,7 +726,7 @@
         "50B5",
         "6DB5"
       ],
-      "value_range": "AUD 8 – AUD 22",
+      "value_range": "<span class=\"ccy\">AUD</span> $8 – $22",
       "value_note": "NOS, boxed, single tube",
       "value_prose": "The 6CU5 is a very common consumer TV/radio type with broad NOS availability from multiple manufacturers; RCA examples in original boxes are priced modestly and appeal mainly to vintage radio and TV restorers.",
       "sources": [
@@ -778,7 +778,7 @@
       "applications_prose": "The 6AS8 was used in the intermediate-frequency strip of AM/FM radios and television sets, where its pentode section amplified the IF signal and its built-in diode provided signal detection and/or automatic volume control (AVC) rectification. Combining both functions in one envelope reduced component count and simplified circuit layout in compact receiver designs of the late 1950s.",
       "direct_equivs": [],
       "substitutes": [],
-      "value_range": "AUD 8 – AUD 20",
+      "value_range": "<span class=\"ccy\">AUD</span> $8 – $20",
       "value_note": "NOS, boxed, single tube",
       "value_prose": "The 6AS8 is a common consumer-grade IF/detector tube with modest collector interest; NOS RCA examples typically sell at the lower end of the vintage miniature tube price range, with original-box examples commanding a small premium.",
       "sources": [
