@@ -19,6 +19,30 @@ const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
 const MAX_NOTE_CHARS = 1000;
 const ALLOWED_MIME = new Set(["image/jpeg", "image/png", "image/webp"]);
 
+/**
+ * Light sanitisation of the submitter's free-text note before we commit it
+ * to the repo. This is belt-and-braces on top of the workflow-level
+ * prompt-injection guard — it removes the cheap-shot escapes a hostile
+ * note could use to break out of its container in either the prompt
+ * (XML-style tag) or the PR-body code block (triple backticks).
+ *
+ * What we do NOT do here: try to "detect" injection by pattern. Pattern
+ * lists are brittle and the workflow prompt already names the threat
+ * category for Claude.
+ */
+function sanitiseNote(raw: string): string {
+  return raw
+    .slice(0, MAX_NOTE_CHARS)
+    // Strip ASCII control chars (incl. NUL) except CR/LF/TAB — keeps
+    // legitimate multi-line notes intact, removes hidden directives.
+    .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, "")
+    // Block escape from the workflow's <submitter_note> envelope.
+    .replace(/<\/submitter_note>/gi, "</submitter_note ↵>")
+    // Block escape from the PR body's fenced code block.
+    .replace(/```/g, "´´´")
+    .trim();
+}
+
 function corsHeaders(env: Env, origin: string | null): HeadersInit {
   const allow = origin === env.ALLOWED_ORIGIN ? origin : env.ALLOWED_ORIGIN;
   return {
@@ -141,7 +165,7 @@ export default {
 
     let note = "";
     const rawNote = form.get("note");
-    if (typeof rawNote === "string") note = rawNote.slice(0, MAX_NOTE_CHARS).trim();
+    if (typeof rawNote === "string") note = sanitiseNote(rawNote);
 
     const id = makeSubmissionId();
     const ext = extFor(mime);
