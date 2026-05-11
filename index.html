@@ -44,6 +44,11 @@
     font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase;
     color: var(--muted); margin: 32px 0 12px; font-weight: 700;
   }
+  h3.cat {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--muted); margin: 22px 0 8px; font-weight: 700;
+  }
+  h3.cat:first-of-type { margin-top: 0; }
   ul.entries {
     list-style: none; padding: 0; margin: 0;
     background: var(--card); border: 1px solid var(--line);
@@ -93,6 +98,8 @@
   </div>
 
   <h2>Entries</h2>
+
+  <h3 class="cat">Rectifiers</h3>
   <ul class="entries">
     <li>
       <a href="entries/001-rca-5z3.html">
@@ -112,6 +119,19 @@
         <span class="arrow">›</span>
       </a>
     </li>
+    <li>
+      <a href="entries/006-radiotron-6x5gt.html">
+        <span class="num">006</span>
+        <span class="code">6X5GT</span>
+        <span class="brand">Radiotron</span>
+        <span class="desc">Indirectly-heated full-wave rectifier · octal · 6.3V/0.6A heater</span>
+        <span class="arrow">›</span>
+      </a>
+    </li>
+  </ul>
+
+  <h3 class="cat">RF / IF pentodes</h3>
+  <ul class="entries">
     <li>
       <a href="entries/003-radiotron-78.html">
         <span class="num">003</span>
@@ -139,15 +159,10 @@
         <span class="arrow">›</span>
       </a>
     </li>
-    <li>
-      <a href="entries/006-radiotron-6x5gt.html">
-        <span class="num">006</span>
-        <span class="code">6X5GT</span>
-        <span class="brand">Radiotron</span>
-        <span class="desc">Indirectly-heated full-wave rectifier · octal · 6.3V/0.6A heater</span>
-        <span class="arrow">›</span>
-      </a>
-    </li>
+  </ul>
+
+  <h3 class="cat">Output valves</h3>
+  <ul class="entries">
     <li>
       <a href="entries/007-gec-kt66.html">
         <span class="num">007</span>
