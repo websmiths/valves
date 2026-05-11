@@ -101,13 +101,28 @@ the data needed for a catalogue entry. Required fields:
   applications_prose    (str)  1-3 sentence prose paragraph
   direct_equivs         (list[str])  Same electricals AND same base
   substitutes           (list[str])  Same electricals, different base
-  value_range           (str)  AUD range, e.g. "A$25 – A$60"
+  value_range           (str)  Australian-dollar range, formatted with
+                                "AUD" prefix and an en-dash, e.g.
+                                "AUD 25 – AUD 60". Do not use "A$" — the
+                                catalogue uses the unambiguous "AUD" form.
+                                If primary pricing data is in another
+                                currency, convert at a recent typical rate.
   value_note            (str)  E.g. "NOS, boxed, single tube"
-  value_prose           (str)  1-2 sentences on pricing nuance
+  value_prose           (str)  1-2 sentences on pricing nuance. If you
+                                converted from USD/GBP/EUR, mention the
+                                source currency here.
   sources               (list of [label, url] pairs)  Reference links
   crop_region           (object) with keys left, top, right, bottom — pixel
                                 coordinates in the SOURCE image bounding the
-                                box. Used to crop a per-entry thumbnail.
+                                box. The cropped region will be displayed at
+                                small size (~220 px tall) on the entry page
+                                as the only visual evidence the reviewer
+                                has. Pick a GENEROUS region: include the
+                                full box label, the brand name, and a
+                                margin of box edges around it — not just
+                                the printed code text. The reviewer must be
+                                able to visually verify the code from this
+                                crop alone.
 
   Optional fields (include only when applicable; omit otherwise):
   heater_drop           (str)  For rectifiers only
@@ -128,9 +143,14 @@ For each box you can identify in the supplied photograph, produce one
 JSON object matching the schema. Use the web_search tool when you need
 to verify datasheet specs, equivalents, or Australian/AUD market value.
 
-If a box has a code that's only partially legible or handwritten in a
-way that admits multiple readings, set confidence_class to "medium" or
-"low" and explain the ambiguity in confidence_label.
+Calibrate confidence_class and confidence_label to what a HUMAN
+REVIEWER will be able to verify from the displayed crop alone — not
+what you can perceive from the full-resolution image. If the source
+photo is small or the printed text in your chosen crop_region will be
+pixelated at thumbnail size, prefer "medium" with a note like
+"code identified by model; crop is small / pixelated — physically
+verify". Reserve "high" for cases where the reviewer will be able to
+read the code themselves in the rendered crop.
 
 If a box is genuinely unreadable, add a short description of it to the
 "unaccounted" list rather than guessing.
