@@ -41,21 +41,27 @@ ambiguous codes, and the HTML template it writes against.
 
 ## Current status
 
-| # | Code        | Brand           | Type                                       | Source image    | Count |
-|---|-------------|-----------------|--------------------------------------------|-----------------|-------|
-| 001 | **5Z3**   | RCA             | Full-wave rectifier (UX4)                  | `boxes-1.jpeg`  | 1     |
-| 002 | **80**    | Radiotron       | Full-wave rectifier (UX4, pre-octal 5Y3)   | `boxes-1.jpeg`  | 4     |
-| 003 | **78**    | Radiotron       | Variable-mu RF/IF pentode (6-pin)          | `boxes-1.jpeg`  | 1     |
-| 004 | **6D6**   | Super Radiotron | Variable-mu RF/IF pentode (6-pin)          | `boxes-1.jpeg`  | ≈ 5   |
-| 005 | **6C6**   | Radiotron       | Sharp-cutoff RF / detector pentode (6-pin) | `boxes-1.jpeg`  | 1     |
-| 006 | **6X5GT** | Radiotron       | Full-wave rectifier (octal, 6.3 V)         | `boxes-1.jpeg`  | 1     |
-| 007 | **KT66**  | G.E.C.          | Beam-tetrode audio output valve (octal)    | `boxes-1.jpeg`  | 1     |
+| # | Code        | Brand           | Type                                            | Source image    | Count |
+|---|-------------|-----------------|-------------------------------------------------|-----------------|-------|
+| 001 | **5Z3**   | RCA             | Full-wave rectifier (UX4)                       | `boxes-1.jpeg`  | 1     |
+| 002 | **80**    | Radiotron       | Full-wave rectifier (UX4, pre-octal 5Y3)        | `boxes-1.jpeg`  | 4     |
+| 003 | **78**    | Radiotron       | Variable-mu RF/IF pentode (6-pin)               | `boxes-1.jpeg`  | 1     |
+| 004 | **6D6**   | Super Radiotron | Variable-mu RF/IF pentode (6-pin)               | `boxes-1.jpeg`  | ≈ 5   |
+| 005 | **6C6**   | Radiotron       | Sharp-cutoff RF / detector pentode (6-pin)      | `boxes-1.jpeg`  | 1     |
+| 006 | **6X5GT** | Radiotron       | Full-wave rectifier (octal, 6.3 V)              | `boxes-1.jpeg`  | 1     |
+| 007 | **KT66**  | G.E.C.          | Beam-tetrode audio output valve (octal)         | `boxes-1.jpeg`  | 1     |
+| 008 | **6B7S**  | Radiotron       | Duo-diode pentode (det. + AVC + AF, 7-pin)      | `boxes-1.jpeg`  | ≈ 2   |
+| 009 | **6J7**   | Super Radiotron | Sharp-cutoff RF/IF pentode (octal, top cap)     | `boxes-1.jpeg`  | 1     |
+| 010 | **6J8G**  | Super Radiotron | Triode-heptode frequency converter (octal)      | `boxes-1.jpeg`  | 1     |
 
-First-batch sweep through `boxes-1.jpeg` — covers the clearly-labelled
-Radiotron / RCA / GEC boxes (~13 of the visible ~40). Remaining boxes —
-Mullard, Brimar, the handwritten Miniwatt cartons, and the loose-tube
-tubs — are deferred to a follow-up pass. See `outputs/boxes-1-tally.md`
-for the master survey of this photo.
+Second sweep of `boxes-1.jpeg` covers everything I could read with at
+least medium confidence — adds the 6B7S duo-diode pentode, the octal
+6J7 sharp-cutoff pentode and the 6J8G frequency converter. Catalogued
+types now account for roughly 18 of the ~40 visible boxes; the
+remaining ~22 are mostly handwritten Miniwatt yellow cartons and a few
+white Mullard boxes whose codes aren't legible at the photo's
+resolution. See [`outputs/boxes-1-tally.md`](outputs/boxes-1-tally.md)
+for the master sweep.
 
 ## Verification flags
 
@@ -77,6 +83,17 @@ physical box has been confirmed against the entry.
 - [ ] **005 — Radiotron 6C6.** Handwritten code "6C6" on the AWV white
   sticker. Confirm reading (the "C" could conceivably be a poorly-formed
   "D", which would make it another 6D6).
+- [ ] **008 — Radiotron 6B7S.** Printed factory label reads "6B7S"
+  cleanly — recorded as High confidence — but the leading "6" prints in
+  a closed style that could be misread as "0". Worth confirming on the
+  physical box. Roughly two cartons of this type.
+- [ ] **009 — Super Radiotron 6J7.** Handwritten code "6J7" on a white
+  carton sticker. Confirm reading — could conceivably be "GJ7" or "6J4"
+  with a poorly formed digit.
+- [ ] **010 — Super Radiotron 6J8G.** Handwritten "6J8G" on a white
+  sticker. Confirm — adjacent "6D6" handwriting is similar enough that
+  the "8" could be a "B" or "0". 6J8G is the most likely reading given
+  era and label style.
 
 ### Cross-references worth knowing
 
@@ -87,22 +104,39 @@ physical box has been confirmed against the entry.
 - **001 (5Z3)** and **002 (80)** are both directly-heated 5 V rectifiers
   on the UX4 base. The 5Z3 is the higher-current sibling (3 A filament,
   225 mA DC out) of the 80 (2 A filament, 125 mA DC out).
+- **005 (6C6)** and **009 (6J7)** are functionally equivalent
+  sharp-cutoff RF/IF pentodes on different bases — the 6C6 on the
+  pre-octal 6-pin small base, the 6J7 on the octal base. A 6C6→6J7
+  socket adapter is a common vintage-radio repair item.
+- **008 (6B7S)** is the duplex-diode pentode counterpart to the simpler
+  6C6 / 6J7 — same era, same factory, but combines detector, AGC and
+  first-AF into one envelope. Sets that use a 6B7 typically don't need
+  a separate detector valve.
 
 ### Unaccounted boxes in `boxes-1.jpeg`
 
-Roughly 27 boxes from this frame are not yet catalogued. The bulk are:
+Roughly 22 boxes from this frame remain uncatalogued after the second
+sweep — these are the ones whose printed or handwritten codes I
+genuinely couldn't read from the photograph. They split into:
 
-- Yellow Miniwatt / Marshall cartons with codes only readable in person
-  (visible glimpses suggest 6X4G, EH35, ATP4, 6V6 family).
-- Small white Mullard boxes (codes below the photo's legibility).
-- One Brimar carton with an obscured code.
-- Handwritten white-sticker boxes in the upper-left clump (one looks like
-  "6J7", another "6J8G", one possibly "6V6GT" — all to confirm).
-- The two plastic tubs of loose un-boxed tubes (not in scope for the
-  box-photo catalogue, but worth a separate inventory later).
+- **~6 yellow Miniwatt (Mullard Australia) cartons** with handwritten
+  codes. Visible fragments suggest the codes start with "6A##", "6X##",
+  "EH##" or "AZ##" — i.e. probably a mix of 6X4G rectifiers, EH35 audio
+  pentode, AZ41 rectifier, and similar 1940s-50s Mullard types — but I
+  can't disambiguate from the photo.
+- **~2 small white Mullard boxes** with codes that fall below the photo's
+  legibility threshold (one possibly "5Y3GT" or "EY51").
+- **1 Brimar carton** with the code partly obscured by an adjacent box.
+- **~3 handwritten white-sticker boxes** in the lower-left clump (one
+  small box near the cylindrical wrapped tubes, two small white boxes
+  near the Mullards).
+- **2 plastic tubs of loose un-boxed tubes** — out of scope for the
+  box-photo catalogue, but worth a separate inventory pass.
+- **A cluster of cylindrical paper-wrapped tubes** (loose, no boxes;
+  also out of scope).
 
-See [`outputs/boxes-1-tally.md`](outputs/boxes-1-tally.md) for the master
-sweep that produced these numbers.
+See [`outputs/boxes-1-tally.md`](outputs/boxes-1-tally.md) for the
+master sweep that produced these numbers.
 
 ## How entries are built
 

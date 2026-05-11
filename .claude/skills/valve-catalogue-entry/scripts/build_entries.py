@@ -20,6 +20,7 @@ OUTPUTS = REPO / "outputs"
 CATEGORIES = [
     "Rectifiers",
     "RF / IF pentodes",
+    "Frequency converters",
     "Output valves",
     "Other / TBD",
 ]
@@ -688,6 +689,170 @@ ENTRIES_DATA = [
             ("Frank's Tube Data — KT66 datasheet", "https://frank.pocnet.net/sheets/010/k/KT66.pdf"),
             ("Aussie Audio Mart — GEC KT66 NOS listings", "https://www.aussieaudiomart.com/details/649323642-very-rare-gec-kt66-nos-valve-collection/"),
             ("Watford Valves — KT66 reference", "https://www.watfordvalves.com/products.asp?search=kt66"),
+        ],
+    },
+    {  # 008 — Radiotron 6B7S
+        "id": "008", "filename": "008-radiotron-6b7s.html",
+        "brand": "Radiotron", "code": "6B7S",
+        "category": "RF / IF pentodes",
+        "function_tag": "Duo-diode pentode",
+        "source": "boxes-1.jpeg", "crop": "entry-008-crop.jpeg",
+        "svg_key": "st-6pin",
+        "lede": (
+            "Australian-made duo-diode pentode — two diodes for AM "
+            "detection / AGC plus a sharp-cutoff pentode in one envelope, "
+            "all in a single 7-pin small base with a top-cap control grid. "
+            "The \"S\" suffix on Australian Radiotron / AWV cartons "
+            "indicates a \"Super\" / Sydney-made variant of the otherwise "
+            "identical 6B7."
+        ),
+        "country": "Australia (AWV / RCA-Radiotron, Sydney)",
+        "first_introduced": "1933 (RCA 6B7)",
+        "era": "1933 – late 1940s",
+        "confidence_label": "High · printed factory label",
+        "confidence_class": "high",
+        "count": "≈ 2 boxes present",
+        "function": "Duplex-diode sharp-cutoff pentode",
+        "envelope": "ST-shape",
+        "envelope_detail": "ST-shape glass, top-cap control grid",
+        "base": "7-pin small",
+        "base_detail": "7-pin small with top-cap control grid",
+        "heating": "Indirectly heated, 6.3 V, 0.3 A",
+        "rating_1_label": "Max plate voltage",
+        "rating_1_value": "250 V (pentode)",
+        "rating_2_label": "Mutual conductance",
+        "rating_2_value": "~1.1 mA/V",
+        "application_short": "Combined detector / AVC / first-AF stage in 1930s superhets",
+        "applications_prose": (
+            "The 6B7 family did three jobs in one envelope — the two "
+            "diode plates handled second-detection of the IF signal and "
+            "produced AGC voltage, while the pentode acted as the first "
+            "audio amplifier. Standard fit in Australian and US "
+            "broadcast superhets from about 1933 until the octal "
+            "6B8G / 6SQ7 took over. Equivalent to the German EBF2 in "
+            "function (though pinout differs)."
+        ),
+        "direct_equivs": ["6B7", "6B7G (Australian)"],
+        "substitutes": ["6B8G (octal)", "6SQ7 (octal, diode-triode)", "EBF2 (8-pin)"],
+        "value_range": "A$15 – A$30",
+        "value_note": "NOS, boxed, single tube",
+        "value_prose": (
+            "Less common than the 6D6 / 6C6 but not rare. Boxed AWV "
+            "Australian-made examples (as here) carry a small premium "
+            "with vintage-radio restorers. Used pulls A$5–12."
+        ),
+        "sources": [
+            ("Radiomuseum.org — 6B7", "https://www.radiomuseum.org/tubes/tube_6b7.html"),
+            ("Frank's Tube Data — 6B7 datasheet", "https://frank.pocnet.net/sheets/049/6/6B7.pdf"),
+            ("The Valve Store (AU)", "https://thevalvestore.com.au/"),
+        ],
+    },
+    {  # 009 — Super Radiotron 6J7
+        "id": "009", "filename": "009-radiotron-6j7.html",
+        "brand": "Super Radiotron", "code": "6J7",
+        "category": "RF / IF pentodes",
+        "function_tag": "RF / IF pentode",
+        "source": "boxes-1.jpeg", "crop": "entry-009-crop.jpeg",
+        "svg_key": "octal",
+        "lede": (
+            "Sharp-cutoff RF / IF / detector pentode on the octal base — "
+            "the direct octal successor to the pre-octal 6C6. Top-cap "
+            "control grid, 6.3 V indirectly-heated cathode, used as the "
+            "first audio amp, plate detector or low-noise RF stage in "
+            "1937–50s receivers and signal generators."
+        ),
+        "country": "Australia (AWV / RCA-Radiotron)",
+        "first_introduced": "1937",
+        "era": "1937 – late 1950s",
+        "confidence_label": "Medium · code is handwritten on the carton sticker",
+        "confidence_class": "medium",
+        "function": "Sharp-cutoff RF / IF / detector pentode (octal)",
+        "envelope": "ST / GT-shape",
+        "envelope_detail": "ST or GT glass, top-cap control grid",
+        "base": "Octal (8-pin)",
+        "base_detail": "International octal with top-cap control grid",
+        "heating": "Indirectly heated, 6.3 V, 0.3 A",
+        "rating_1_label": "Max plate voltage",
+        "rating_1_value": "300 V",
+        "rating_2_label": "Mutual conductance",
+        "rating_2_value": "~1.2 mA/V",
+        "application_short": "Sharp-cutoff RF / IF / detector / first-AF without AGC",
+        "applications_prose": (
+            "Octal version of the 6C6 — fixed-gain RF pentode with low "
+            "noise and a sharp cutoff, used as the first IF stage, as a "
+            "plate-detector, or as a low-distortion audio voltage "
+            "amplifier. Common in laboratory signal generators (e.g. "
+            "BC-221 frequency meter) and in PA systems alongside the "
+            "remote-cutoff 6K7."
+        ),
+        "direct_equivs": ["6J7G", "6J7GT", "VT-91"],
+        "substitutes": ["6C6 (6-pin, pre-octal)", "6SJ7 (single-ended octal, no top cap)", "EF37A (8-pin)"],
+        "value_range": "A$15 – A$30",
+        "value_note": "NOS, boxed, single tube",
+        "value_prose": (
+            "Common and inexpensive. Premium for metal-envelope 6J7 "
+            "(versus glass) and for JAN-CRC military variants. Used "
+            "pulls A$5–12."
+        ),
+        "sources": [
+            ("Radiomuseum.org — 6J7", "https://www.radiomuseum.org/tubes/tube_6j7.html"),
+            ("Frank's Tube Data — 6J7 datasheet", "https://frank.pocnet.net/sheets/030/6/6J7.pdf"),
+            ("The Valve Store (AU)", "https://thevalvestore.com.au/"),
+        ],
+    },
+    {  # 010 — Super Radiotron 6J8G
+        "id": "010", "filename": "010-radiotron-6j8g.html",
+        "brand": "Super Radiotron", "code": "6J8G",
+        "category": "Frequency converters",
+        "function_tag": "Triode-heptode converter",
+        "source": "boxes-1.jpeg", "crop": "entry-010-crop.jpeg",
+        "svg_key": "octal",
+        "lede": (
+            "Octal triode-heptode frequency converter — combines a local "
+            "oscillator triode and a heptode mixer in one envelope, the "
+            "first-stage workhorse of late-1930s and 1940s superhet "
+            "receivers. Australian-made by AWV under the Super Radiotron "
+            "label."
+        ),
+        "country": "Australia (AWV / RCA-Radiotron)",
+        "first_introduced": "1938",
+        "era": "1938 – mid 1950s",
+        "confidence_label": "Medium · code is handwritten on the carton sticker",
+        "confidence_class": "medium",
+        "function": "Triode-heptode frequency converter (mixer-oscillator)",
+        "envelope": "G-shape (large ST)",
+        "envelope_detail": "G-shape envelope, ~38 × 110 mm",
+        "base": "Octal (8-pin)",
+        "base_detail": "International octal, key-locked centre spigot",
+        "heating": "Indirectly heated, 6.3 V, 0.3 A",
+        "rating_1_label": "Max plate voltage",
+        "rating_1_value": "250 V (heptode)",
+        "rating_2_label": "Conversion conductance",
+        "rating_2_value": "~0.55 mA/V",
+        "application_short": "First-stage mixer / oscillator in superhet receivers",
+        "applications_prose": (
+            "Standard frequency converter in Australian valve receivers "
+            "from the late 1930s through the war years — produces the "
+            "intermediate-frequency signal by mixing the incoming RF "
+            "with the local oscillator's signal, both happening inside "
+            "the same envelope. AWA, Astor, Healing and HMV sets all "
+            "used it. The miniature post-war successor is the 6BE6 "
+            "(B7G heptode, separate oscillator stage) or the all-in-one "
+            "6BE8."
+        ),
+        "direct_equivs": ["6J8", "ECH33 (European triode-heptode)"],
+        "substitutes": ["6K8G (different pinout)", "6BE6 (B7G miniature heptode)", "ECH81 (B9A)"],
+        "value_range": "A$20 – A$40",
+        "value_note": "NOS, boxed, single tube",
+        "value_prose": (
+            "Slightly less common than the 6D6 / 6C6 family because each "
+            "set only used one. Used pulls A$8–15. Boxed Australian-made "
+            "examples carry a modest collector premium."
+        ),
+        "sources": [
+            ("Radiomuseum.org — 6J8G", "https://www.radiomuseum.org/tubes/tube_6j8g.html"),
+            ("Frank's Tube Data — 6J8G datasheet", "https://frank.pocnet.net/sheets/093/6/6J8G.pdf"),
+            ("The Valve Store (AU)", "https://thevalvestore.com.au/"),
         ],
     },
 ]

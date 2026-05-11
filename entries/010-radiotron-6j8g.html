@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Valve Catalogue — Super Radiotron 6J8G</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --bg: #fafaf7;
+    --ink: #1d1d1b;
+    --muted: #6b6b66;
+    --line: #d9d4c7;
+    --accent: #8a1c1c;
+    --accent-soft: #f3e7e7;
+    --card: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 32px 24px 64px;
+    font-family: "Helvetica Neue", "Inter", system-ui, sans-serif;
+    background: var(--bg); color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+  .sheet {
+    max-width: 920px; margin: 0 auto;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.02), 0 6px 24px rgba(40,30,10,0.06);
+    overflow: hidden;
+  }
+  header {
+    padding: 24px 32px 18px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap;
+  }
+  header .eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  header h1 {
+    margin: 0; font-size: 36px; font-weight: 700; letter-spacing: -0.01em;
+  }
+  header h1 .code { color: var(--accent); }
+  header .tag {
+    display: inline-block; padding: 3px 10px; border-radius: 999px;
+    background: var(--accent-soft); color: var(--accent);
+    font-size: 12px; font-weight: 600; letter-spacing: 0.04em;
+  }
+  header .id {
+    margin-left: auto; font-size: 12px; color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .lede {
+    padding: 12px 32px 22px; color: var(--muted);
+    border-bottom: 1px solid var(--line);
+    font-size: 15px; line-height: 1.55;
+  }
+  .imgs {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .imgs figure {
+    margin: 0; padding: 20px 24px; text-align: center;
+    border-right: 1px solid var(--line);
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+  }
+  .imgs figure:last-child { border-right: 0; }
+  .imgs img, .imgs svg {
+    max-width: 100%; height: 220px; width: auto;
+    border-radius: 4px;
+  }
+  .imgs figcaption {
+    font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .grid {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+  }
+  section {
+    padding: 20px 32px;
+    border-bottom: 1px solid var(--line);
+  }
+  section.col { border-right: 1px solid var(--line); }
+  section.col:nth-child(2n) { border-right: 0; }
+  section h2 {
+    margin: 0 0 12px; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
+  }
+  dl {
+    margin: 0; display: grid;
+    grid-template-columns: 38% 62%;
+    row-gap: 6px; column-gap: 12px;
+    font-size: 14px; line-height: 1.45;
+  }
+  dt { color: var(--muted); font-weight: 500; }
+  dd { margin: 0; color: var(--ink); }
+  dd strong { color: var(--accent); }
+  .prose { font-size: 14px; line-height: 1.6; }
+  .prose p { margin: 0 0 10px; }
+  .pillrow { display: flex; flex-wrap: wrap; gap: 6px; }
+  .pill {
+    display: inline-block; padding: 4px 10px;
+    background: #f1efe8; border: 1px solid var(--line);
+    border-radius: 999px; font-size: 12px; color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .pill.same { background: #eef5ee; border-color: #c8dfc8; color: #1f4a1f; }
+  .pill.alt  { background: #fff6e1; border-color: #ecd99a; color: #6a4a08; }
+  .value-row {
+    display: flex; align-items: baseline; gap: 14px;
+    font-variant-numeric: tabular-nums;
+  }
+  .value-row .big { font-size: 22px; font-weight: 700; }
+  .value-row .note { font-size: 12px; color: var(--muted); }
+  footer {
+    padding: 18px 32px 22px;
+    font-size: 12px; color: var(--muted); line-height: 1.55;
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+  .conf {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px; border-radius: 999px;
+    font-size: 12px; font-weight: 600;
+  }
+  .conf.high   { background: #eef5ee; color: #1f4a1f; }
+  .conf.medium { background: #fff6e1; color: #6a4a08; }
+  .conf.low    { background: #fdecec; color: #7a1c1c; }
+  .conf .dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; opacity: 0.7; }
+  @media (max-width: 720px) {
+    .imgs { grid-template-columns: 1fr; }
+    .imgs figure { border-right: 0; border-bottom: 1px solid var(--line); }
+    .grid { grid-template-columns: 1fr; }
+    section.col { border-right: 0; }
+    dl { grid-template-columns: 40% 60%; }
+  }
+
+.page {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 28px;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: start;
+}
+.sidebar {
+  position: sticky; top: 24px;
+  font-size: 13px; line-height: 1.4;
+}
+.sidebar .nav-home {
+  display: inline-block; padding: 4px 0;
+  font-size: 12px; letter-spacing: 0.04em;
+  color: var(--muted); text-decoration: none;
+  margin-bottom: 14px;
+}
+.sidebar .nav-home:hover { color: var(--accent); }
+.sidebar .group { margin-bottom: 16px; }
+.sidebar .group h3 {
+  font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--muted); margin: 0 0 6px; font-weight: 700;
+}
+.sidebar ul { list-style: none; padding: 0; margin: 0; }
+.sidebar a.entry-link {
+  display: flex; gap: 8px; align-items: baseline;
+  padding: 4px 10px; border-radius: 4px;
+  text-decoration: none; color: var(--ink);
+  font-size: 13px;
+}
+.sidebar a.entry-link:hover { background: #f1efe8; }
+.sidebar a.entry-link.current {
+  background: var(--accent-soft); color: var(--accent);
+}
+.sidebar a.entry-link .code {
+  font-weight: 700; color: var(--accent); min-width: 52px;
+  font-variant-numeric: tabular-nums;
+}
+.sidebar a.entry-link .brand {
+  color: var(--muted); font-size: 11px;
+}
+.sidebar a.entry-link.current .brand { color: var(--accent); opacity: 0.85; }
+
+main { min-width: 0; }
+main .back-link {
+  display: inline-block; margin-bottom: 8px;
+  font-size: 12px; color: var(--muted); text-decoration: none;
+}
+main .back-link:hover { color: var(--accent); }
+
+@media (max-width: 960px) {
+  body { padding: 24px 16px 48px; }
+  .page { grid-template-columns: 1fr; gap: 16px; }
+  .sidebar { position: static; }
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+<aside class="sidebar">
+<a href="../index.html" class="nav-home">← Catalogue index</a>
+<div class="group"><h3>Rectifiers</h3><ul>
+<li><a class="entry-link" href="001-rca-5z3.html"><span class="code">5Z3</span><span class="brand">RCA</span></a></li>
+<li><a class="entry-link" href="002-radiotron-80.html"><span class="code">80</span><span class="brand">Radiotron</span></a></li>
+<li><a class="entry-link" href="006-radiotron-6x5gt.html"><span class="code">6X5GT</span><span class="brand">Radiotron</span></a></li>
+</ul></div>
+<div class="group"><h3>RF / IF pentodes</h3><ul>
+<li><a class="entry-link" href="003-radiotron-78.html"><span class="code">78</span><span class="brand">Radiotron</span></a></li>
+<li><a class="entry-link" href="004-radiotron-6d6.html"><span class="code">6D6</span><span class="brand">Super Radiotron</span></a></li>
+<li><a class="entry-link" href="005-radiotron-6c6.html"><span class="code">6C6</span><span class="brand">Radiotron</span></a></li>
+<li><a class="entry-link" href="008-radiotron-6b7s.html"><span class="code">6B7S</span><span class="brand">Radiotron</span></a></li>
+<li><a class="entry-link" href="009-radiotron-6j7.html"><span class="code">6J7</span><span class="brand">Super Radiotron</span></a></li>
+</ul></div>
+<div class="group"><h3>Frequency converters</h3><ul>
+<li><a class="entry-link current" href="010-radiotron-6j8g.html"><span class="code">6J8G</span><span class="brand">Super Radiotron</span></a></li>
+</ul></div>
+<div class="group"><h3>Output valves</h3><ul>
+<li><a class="entry-link" href="007-gec-kt66.html"><span class="code">KT66</span><span class="brand">G.E.C.</span></a></li>
+</ul></div>
+</aside>
+
+<main>
+<a href="../index.html" class="back-link">← All entries</a>
+
+<div class="sheet">
+
+  <header>
+    <span class="tag">Triode-heptode converter</span>
+    <div>
+      <div class="eyebrow">Valve Catalogue · Entry</div>
+      <h1>Super Radiotron <span class="code">6J8G</span></h1>
+    </div>
+    <span class="id">Entry #010 · Source: boxes-1.jpeg</span>
+  </header>
+
+  <p class="lede">
+    Octal triode-heptode frequency converter — combines a local oscillator triode and a heptode mixer in one envelope, the first-stage workhorse of late-1930s and 1940s superhet receivers. Australian-made by AWV under the Super Radiotron label.
+  </p>
+
+  <div class="imgs">
+    <figure>
+      <img src="data:image/jpeg;base64,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" alt="Photograph of the Super Radiotron 6J8G valve box, cropped from the catalogue source image.">
+      <figcaption>Source photo · cropped from boxes-1.jpeg</figcaption>
+    </figure>
+    <figure>
+      <svg viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg" aria-label="GT/G-shape valve with octal base.">
+  <defs>
+    <linearGradient id="glass2" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#dfe6ec"/>
+      <stop offset="0.5" stop-color="#f6f9fc"/>
+      <stop offset="1" stop-color="#b8c2cb"/>
+    </linearGradient>
+    <linearGradient id="base2" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#2a1f15"/>
+      <stop offset="1" stop-color="#181009"/>
+    </linearGradient>
+  </defs>
+  <!-- straight-sided GT envelope -->
+  <path d="M60,30 Q60,18 100,18 Q140,18 140,30 L140,170 Q140,180 100,180 Q60,180 60,170 Z" fill="url(#glass2)" stroke="#3a3a3a" stroke-width="1.3"/>
+  <circle cx="100" cy="18" r="3" fill="#222"/>
+  <rect x="80" y="55" width="40" height="70" fill="#3b3b3b" stroke="#222" stroke-width="0.8"/>
+  <path d="M88,135 Q100,150 112,135" fill="none" stroke="#c84a14" stroke-width="1.3"/>
+  <!-- octal base -->
+  <rect x="55" y="180" width="90" height="40" rx="4" fill="url(#base2)"/>
+  <rect x="55" y="180" width="90" height="6" fill="#0d0805"/>
+  <!-- key in the centre -->
+  <rect x="96" y="218" width="8" height="32" rx="2" fill="#2a2018" stroke="#0d0805"/>
+  <!-- 8 pins in a circle -->
+  <g fill="#b9a37a" stroke="#6a5b3e">
+    <rect x="73" y="220" width="4" height="26" rx="1.5"/>
+    <rect x="83" y="222" width="4" height="24" rx="1.5"/>
+    <rect x="92" y="223" width="4" height="22" rx="1.5"/>
+    <rect x="104" y="223" width="4" height="22" rx="1.5"/>
+    <rect x="113" y="222" width="4" height="24" rx="1.5"/>
+    <rect x="123" y="220" width="4" height="26" rx="1.5"/>
+    <rect x="63" y="216" width="4" height="28" rx="1.5"/>
+    <rect x="133" y="216" width="4" height="28" rx="1.5"/>
+  </g>
+  <text x="100" y="206" text-anchor="middle" font-family="Helvetica, sans-serif" font-size="9" fill="#e7d6a8" letter-spacing="1.5">6J8G</text>
+</svg>
+
+      <figcaption>Reference · G-shape (large ST) envelope, Octal (8-pin) base</figcaption>
+    </figure>
+  </div>
+
+  <div class="grid">
+    <section class="col">
+      <h2>Identification</h2>
+      <dl>
+        <dt>Code</dt><dd><strong>6J8G</strong></dd>
+        <dt>Brand on box</dt><dd>Super Radiotron</dd>
+        <dt>Country of origin</dt><dd>Australia (AWV / RCA-Radiotron)</dd>
+        <dt>First introduced</dt><dd>1938</dd>
+        <dt>Era</dt><dd>1938 – mid 1950s</dd>
+        <dt>Confidence</dt><dd><span class="conf medium"><span class="dot"></span>Medium · code is handwritten on the carton sticker</span></dd>
+        
+      </dl>
+    </section>
+
+    <section class="col">
+      <h2>Type &amp; construction</h2>
+      <dl>
+        <dt>Function</dt><dd><strong>Triode-heptode frequency converter (mixer-oscillator)</strong></dd>
+        <dt>Envelope</dt><dd>G-shape envelope, ~38 × 110 mm</dd>
+        <dt>Base</dt><dd>International octal, key-locked centre spigot</dd>
+        <dt>Heating</dt><dd>Indirectly heated, 6.3 V, 0.3 A</dd>
+        
+      </dl>
+    </section>
+
+    <section class="col">
+      <h2>Key ratings</h2>
+      <dl>
+        <dt>Max plate voltage</dt><dd>250 V (heptode)</dd>
+        <dt>Conversion conductance</dt><dd>~0.55 mA/V</dd>
+        <dt>Application</dt><dd>First-stage mixer / oscillator in superhet receivers</dd>
+        
+        
+      </dl>
+    </section>
+
+    <section class="col">
+      <h2>Typical applications</h2>
+      <div class="prose">
+        <p>Standard frequency converter in Australian valve receivers from the late 1930s through the war years — produces the intermediate-frequency signal by mixing the incoming RF with the local oscillator's signal, both happening inside the same envelope. AWA, Astor, Healing and HMV sets all used it. The miniature post-war successor is the 6BE6 (B7G heptode, separate oscillator stage) or the all-in-one 6BE8.</p>
+      </div>
+    </section>
+
+    <section class="col">
+      <h2>Equivalents &amp; substitutes</h2>
+      <div class="prose">
+        <p style="margin-bottom:8px;"><strong>Direct equivalents</strong> (same electricals &amp; base):</p>
+        <div class="pillrow" style="margin-bottom:12px;"><span class="pill same">6J8</span><span class="pill same">ECH33 (European triode-heptode)</span></div>
+        <p style="margin-bottom:8px;"><strong>Electrically same, different base</strong> (needs adapter / rewire):</p>
+        <div class="pillrow"><span class="pill alt">6K8G (different pinout)</span><span class="pill alt">6BE6 (B7G miniature heptode)</span><span class="pill alt">ECH81 (B9A)</span></div>
+      </div>
+    </section>
+
+    <section class="col">
+      <h2>Approximate market value</h2>
+      <div class="value-row">
+        <div class="big">A$20 – A$40</div>
+        <div class="note">NOS, boxed, single tube</div>
+      </div>
+      <div class="prose" style="margin-top:10px;">
+        <p>Slightly less common than the 6D6 / 6C6 family because each set only used one. Used pulls A$8–15. Boxed Australian-made examples carry a modest collector premium.</p>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <strong>Sources:</strong>
+    <a href="https://www.radiomuseum.org/tubes/tube_6j8g.html">Radiomuseum.org — 6J8G</a> ·
+    <a href="https://frank.pocnet.net/sheets/093/6/6J8G.pdf">Frank's Tube Data — 6J8G datasheet</a> ·
+    <a href="https://thevalvestore.com.au/">The Valve Store (AU)</a>
+    <br><br>
+    <em>Catalogue entry · generated from boxes-1.jpeg.</em>
+  </footer>
+
+</div>
+
+</main>
+
+</div>
+
+</body>
+</html>
