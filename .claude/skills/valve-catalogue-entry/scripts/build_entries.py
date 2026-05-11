@@ -1,0 +1,526 @@
+#!/usr/bin/env python3
+"""Batch generator for catalogue entries.
+
+Renders one HTML entry per item in ENTRIES_DATA, using the skill's
+entry-template CSS for visual consistency. Append new entries to the list
+and re-run to add more to the catalogue. Designed to live in the skill so
+future batches start from a working example.
+"""
+from __future__ import annotations
+import base64
+from pathlib import Path
+
+SCRIPT_DIR = Path(__file__).resolve().parent
+ASSETS = SCRIPT_DIR.parent / "assets"
+REPO = SCRIPT_DIR.parents[3]
+ENTRIES = REPO / "entries"
+OUTPUTS = REPO / "outputs"
+
+
+def b64(path: Path) -> str:
+    return base64.b64encode(path.read_bytes()).decode("ascii")
+
+
+def conf_pill(label: str, level: str) -> str:
+    return f'<span class="conf {level}"><span class="dot"></span>{label}</span>'
+
+
+def svg_for(env_key: str, code: str) -> str:
+    fname = {
+        "st-ux4": "st-ux4.svg",
+        "octal": "octal.svg",
+        "miniature-7pin": "miniature-7pin.svg",
+        "miniature-9pin-noval": "miniature-9pin-noval.svg",
+        # 6-pin small base — reuse st-ux4 with the right label; the visual difference
+        # is in the pin count which is suggestive rather than exact across the
+        # whole set anyway.
+        "st-6pin": "st-ux4.svg",
+    }[env_key]
+    svg = (ASSETS / "svg-envelopes" / fname).read_text()
+    return svg.replace("{{CODE}}", code)
+
+
+def pills(items: list[str], cls: str) -> str:
+    return "".join(f'<span class="pill {cls}">{x}</span>' for x in items)
+
+
+def equivs_block(direct: list[str], subs: list[str]) -> str:
+    out = []
+    if direct:
+        out.append('<p style="margin-bottom:8px;"><strong>Direct equivalents</strong> (same electricals &amp; base):</p>')
+        out.append(f'<div class="pillrow" style="margin-bottom:12px;">{pills(direct, "same")}</div>')
+    if subs:
+        out.append('<p style="margin-bottom:8px;"><strong>Electrically same, different base</strong> (needs adapter / rewire):</p>')
+        out.append(f'<div class="pillrow">{pills(subs, "alt")}</div>')
+    if not out:
+        out.append("<p>No widely-listed equivalents.</p>")
+    return "\n        ".join(out)
+
+
+def sources_block(items: list[tuple[str, str]]) -> str:
+    return " ·\n    ".join(f'<a href="{url}">{label}</a>' for label, url in items)
+
+
+# Shared CSS (from the canonical template — it has the .conf.high/.medium/.low
+# level styling that entry 001 didn't bother with).
+CSS = (ASSETS / "entry-template.html").read_text().split("<style>", 1)[1].split("</style>", 1)[0]
+
+
+def render(e: dict) -> str:
+    box_b64 = b64(OUTPUTS / e["crop"])
+    svg = svg_for(e["svg_key"], e["code"])
+    heater_drop_row = (
+        f'<dt>Heater drop</dt><dd>{e["heater_drop"]}</dd>' if e.get("heater_drop") else ""
+    )
+    mounting_row = (
+        f'<dt>Mounting</dt><dd>{e["mounting"]}</dd>' if e.get("mounting") else ""
+    )
+    mil_row = (
+        f'<dt>Mil. designation</dt><dd>{e["mil"]}</dd>' if e.get("mil") else ""
+    )
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Valve Catalogue — {e['brand']} {e['code']}</title>
+<style>{CSS}</style>
+</head>
+<body>
+
+<div class="sheet">
+
+  <header>
+    <span class="tag">{e['function_tag']}</span>
+    <div>
+      <div class="eyebrow">Valve Catalogue · Entry</div>
+      <h1>{e['brand']} <span class="code">{e['code']}</span></h1>
+    </div>
+    <span class="id">Entry #{e['id']} · Source: {e['source']}</span>
+  </header>
+
+  <p class="lede">
+    {e['lede']}
+  </p>
+
+  <div class="imgs">
+    <figure>
+      <img src="data:image/jpeg;base64,{box_b64}" alt="Photograph of the {e['brand']} {e['code']} valve box, cropped from the catalogue source image.">
+      <figcaption>Source photo · cropped from {e['source']}</figcaption>
+    </figure>
+    <figure>
+      {svg}
+      <figcaption>Reference · {e['envelope']} envelope, {e['base']} base</figcaption>
+    </figure>
+  </div>
+
+  <div class="grid">
+    <section class="col">
+      <h2>Identification</h2>
+      <dl>
+        <dt>Code</dt><dd><strong>{e['code']}</strong></dd>
+        <dt>Brand on box</dt><dd>{e['brand']}</dd>
+        <dt>Country of origin</dt><dd>{e['country']}</dd>
+        <dt>First introduced</dt><dd>{e['first_introduced']}</dd>
+        <dt>Era</dt><dd>{e['era']}</dd>
+        <dt>Confidence</dt><dd>{conf_pill(e['confidence_label'], e['confidence_class'])}</dd>
+        {f'<dt>Count in photo</dt><dd>{e["count"]}</dd>' if e.get('count') else ''}
+      </dl>
+    </section>
+
+    <section class="col">
+      <h2>Type &amp; construction</h2>
+      <dl>
+        <dt>Function</dt><dd><strong>{e['function']}</strong></dd>
+        <dt>Envelope</dt><dd>{e['envelope_detail']}</dd>
+        <dt>Base</dt><dd>{e['base_detail']}</dd>
+        <dt>Heating</dt><dd>{e['heating']}</dd>
+        {heater_drop_row}
+      </dl>
+    </section>
+
+    <section class="col">
+      <h2>Key ratings</h2>
+      <dl>
+        <dt>{e['rating_1_label']}</dt><dd>{e['rating_1_value']}</dd>
+        <dt>{e['rating_2_label']}</dt><dd>{e['rating_2_value']}</dd>
+        <dt>Application</dt><dd>{e['application_short']}</dd>
+        {mounting_row}
+        {mil_row}
+      </dl>
+    </section>
+
+    <section class="col">
+      <h2>Typical applications</h2>
+      <div class="prose">
+        <p>{e['applications_prose']}</p>
+      </div>
+    </section>
+
+    <section class="col">
+      <h2>Equivalents &amp; substitutes</h2>
+      <div class="prose">
+        {equivs_block(e['direct_equivs'], e['substitutes'])}
+      </div>
+    </section>
+
+    <section class="col">
+      <h2>Approximate market value</h2>
+      <div class="value-row">
+        <div class="big">{e['value_range']}</div>
+        <div class="note">{e['value_note']}</div>
+      </div>
+      <div class="prose" style="margin-top:10px;">
+        <p>{e['value_prose']}</p>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <strong>Sources:</strong>
+    {sources_block(e['sources'])}
+    <br><br>
+    <em>Catalogue entry · generated from {e['source']}.</em>
+  </footer>
+
+</div>
+
+</body>
+</html>
+"""
+
+
+ENTRIES_DATA = [
+    {  # 002 — Radiotron 80
+        "id": "002", "filename": "002-radiotron-80.html",
+        "brand": "Radiotron", "code": "80",
+        "function_tag": "Rectifier",
+        "source": "boxes-1.jpeg", "crop": "entry-002-crop.jpeg",
+        "svg_key": "st-ux4",
+        "lede": (
+            "Pre-octal full-wave high-vacuum rectifier — one of the original "
+            "Western Electric / RCA tube families, dating to 1927. 5-volt, "
+            "2-amp directly-heated filament on the 4-pin UX socket. The "
+            "octal-era replacement is the <strong>5Y3G</strong>, with which the 80 "
+            "is electrically identical."
+        ),
+        "country": "Australia (AWV / RCA-Radiotron), originally USA (RCA)",
+        "first_introduced": "1927 (RCA UX-280)",
+        "era": "1927 – late 1950s",
+        "confidence_label": "High · printed factory label",
+        "confidence_class": "high",
+        "count": "4 boxes present",
+        "function": "Full-wave vacuum rectifier",
+        "envelope": "ST-shape",
+        "envelope_detail": "ST-shape glass, ~52 × 130 mm",
+        "base": "UX4",
+        "base_detail": "UX4 (4 pins, 2 thick / 2 thin)",
+        "heating": "Directly heated filament, 5.0 V AC, 2.0 A",
+        "heater_drop": "~50 V",
+        "rating_1_label": "Max plate voltage",
+        "rating_1_value": "~350 V RMS per plate",
+        "rating_2_label": "Max DC output",
+        "rating_2_value": "~125 mA",
+        "application_short": "HT (B+) supply in domestic receivers &amp; small amps",
+        "mounting": "Vertical, base down",
+        "mil": "VT-71 (military designation)",
+        "applications_prose": (
+            "The 80 was the standard B+ rectifier in AC-mains broadcast "
+            "receivers from the late 1920s through the 1940s — most Radiola, "
+            "Astor and AWA console sets of the era used one. Also common in "
+            "Hammond-style organs and laboratory power supplies that needed a "
+            "modest-current rectifier on the older 4-pin socket."
+        ),
+        "direct_equivs": ["UX-280", "5Y3 (early)", "KX-80"],
+        "substitutes": ["5Y3G (octal)", "5Y3GT (octal)", "5T4"],
+        "value_range": "A$20 – A$45",
+        "value_note": "NOS, boxed, single tube",
+        "value_prose": (
+            "Common Australian-made AWV / Radiotron stock is at the lower "
+            "end; early RCA mesh-plate or balloon-shape (UX-280) variants "
+            "trade higher. Used / tested-good pulls A$8–20."
+        ),
+        "sources": [
+            ("Radiomuseum.org — 80", "https://www.radiomuseum.org/tubes/tube_80.html"),
+            ("Frank's Tube Data — 80 datasheet", "https://frank.pocnet.net/sheets/049/8/80.pdf"),
+            ("The Valve Store (AU)", "https://thevalvestore.com.au/"),
+            ("Aussie Audio Mart — vintage valve listings", "https://www.aussieaudiomart.com/"),
+        ],
+    },
+    {  # 003 — Radiotron 78
+        "id": "003", "filename": "003-radiotron-78.html",
+        "brand": "Radiotron", "code": "78",
+        "function_tag": "RF / IF pentode",
+        "source": "boxes-1.jpeg", "crop": "entry-003-crop.jpeg",
+        "svg_key": "st-6pin",
+        "lede": (
+            "Variable-mu (remote-cutoff) RF / IF pentode introduced by RCA in "
+            "1932. Effectively identical electricals to the better-known "
+            "<strong>6D6</strong> — same heater, same 6-pin small base, same "
+            "characteristics — and the two are routinely listed as direct "
+            "equivalents."
+        ),
+        "country": "Australia (AWV / RCA-Radiotron)",
+        "first_introduced": "1932",
+        "era": "1932 – mid 1950s",
+        "confidence_label": "High · printed factory label",
+        "confidence_class": "high",
+        "function": "Remote-cutoff RF / IF pentode (variable-mu)",
+        "envelope": "ST-shape",
+        "envelope_detail": "ST-shape glass, top-cap control grid",
+        "base": "6-pin small (\"small 6\")",
+        "base_detail": "6-pin small with top-cap control grid",
+        "heating": "Indirectly heated, 6.3 V, 0.3 A",
+        "rating_1_label": "Max plate voltage",
+        "rating_1_value": "250 V",
+        "rating_2_label": "Mutual conductance",
+        "rating_2_value": "~1.45 mA/V",
+        "application_short": "RF and IF amplification with AGC (variable-mu action)",
+        "applications_prose": (
+            "Standard variable-mu pentode in mid-1930s superhet broadcast and "
+            "short-wave receivers — the RF and IF stages of almost every "
+            "domestic radio from about 1933 to 1936, before the octal-base "
+            "6U7G and miniature 6BA6 took over. Pairs naturally with the "
+            "sharp-cutoff 6C6 as detector / first-AF."
+        ),
+        "direct_equivs": ["6D6", "Mullard VMP4G"],
+        "substitutes": ["6U7G (octal)", "6K7 (octal, metal)", "6BA6 (B7G miniature)"],
+        "value_range": "A$15 – A$30",
+        "value_note": "NOS, boxed, single tube",
+        "value_prose": (
+            "Plentiful in vintage-radio circles, so prices stay modest. "
+            "Used / tested-good pulls A$5–12. Premium for sealed RCA black-plate "
+            "or Marconi-Osram examples."
+        ),
+        "sources": [
+            ("Radiomuseum.org — 78", "https://www.radiomuseum.org/tubes/tube_78.html"),
+            ("Frank's Tube Data — 78 datasheet", "https://frank.pocnet.net/sheets/049/7/78.pdf"),
+            ("The Valve Store (AU)", "https://thevalvestore.com.au/"),
+        ],
+    },
+    {  # 004 — Radiotron 6D6
+        "id": "004", "filename": "004-radiotron-6d6.html",
+        "brand": "Super Radiotron", "code": "6D6",
+        "function_tag": "RF / IF pentode",
+        "source": "boxes-1.jpeg", "crop": "entry-004-crop.jpeg",
+        "svg_key": "st-6pin",
+        "lede": (
+            "Variable-mu (remote-cutoff) RF / IF pentode — the direct successor "
+            "to the type 78, with which it shares heater, base, pinout and "
+            "characteristics. Approximately five boxes of this type are present "
+            "in the source frame, all with handwritten labels on Australian "
+            "AWV \"Super Radiotron\" cartons."
+        ),
+        "country": "Australia (AWV / RCA-Radiotron, Sydney)",
+        "first_introduced": "1933",
+        "era": "1933 – late 1950s",
+        "confidence_label": "Medium · code is handwritten on the carton sticker",
+        "confidence_class": "medium",
+        "count": "≈ 5 boxes present",
+        "function": "Remote-cutoff RF / IF pentode (variable-mu)",
+        "envelope": "ST-shape",
+        "envelope_detail": "ST-shape glass, top-cap control grid",
+        "base": "6-pin small",
+        "base_detail": "6-pin small with top-cap control grid",
+        "heating": "Indirectly heated, 6.3 V, 0.3 A",
+        "rating_1_label": "Max plate voltage",
+        "rating_1_value": "250 V",
+        "rating_2_label": "Mutual conductance",
+        "rating_2_value": "~1.6 mA/V",
+        "application_short": "RF / IF amplifier with AGC",
+        "applications_prose": (
+            "RF and IF stages of broadcast and short-wave superhet receivers "
+            "from 1933 onward — the workhorse remote-cutoff pentode of the "
+            "pre-octal era. Australian sets from AWA, Astor, Healing and HMV "
+            "used it extensively. The variable-mu characteristic lets the "
+            "stage gain be reduced cleanly by AGC bias."
+        ),
+        "direct_equivs": ["Type 78", "Mullard VMP4G", "Marconi-Osram MVS/Pen"],
+        "substitutes": ["6U7G (octal)", "6K7 (octal)", "EF39 (8-pin)"],
+        "value_range": "A$15 – A$25",
+        "value_note": "NOS, boxed, single tube",
+        "value_prose": (
+            "Common and cheap on the second-hand market — supply outstrips "
+            "demand because most surviving radios already have one. Used pulls "
+            "A$5–10. Boxed Australian-made Radiotron examples in original "
+            "cartons (as here) carry a small collector premium."
+        ),
+        "sources": [
+            ("Radiomuseum.org — 6D6", "https://www.radiomuseum.org/tubes/tube_6d6.html"),
+            ("Frank's Tube Data — 6D6 datasheet", "https://frank.pocnet.net/sheets/049/6/6D6.pdf"),
+            ("The Valve Store (AU)", "https://thevalvestore.com.au/"),
+        ],
+    },
+    {  # 005 — Radiotron 6C6
+        "id": "005", "filename": "005-radiotron-6c6.html",
+        "brand": "Radiotron", "code": "6C6",
+        "function_tag": "RF / detector pentode",
+        "source": "boxes-1.jpeg", "crop": "entry-005-crop.jpeg",
+        "svg_key": "st-6pin",
+        "lede": (
+            "Sharp-cutoff RF / detector pentode — the fixed-mu counterpart to "
+            "the 6D6. Same 6-pin small base, same 6.3 V heater, same envelope; "
+            "the difference is the control-grid characteristic, which suits "
+            "first-detector and AF roles where AGC isn't applied."
+        ),
+        "country": "Australia (AWV / RCA-Radiotron)",
+        "first_introduced": "1933",
+        "era": "1933 – late 1950s",
+        "confidence_label": "Medium · code is handwritten on the carton sticker",
+        "confidence_class": "medium",
+        "function": "Sharp-cutoff RF / detector pentode",
+        "envelope": "ST-shape",
+        "envelope_detail": "ST-shape glass, top-cap control grid",
+        "base": "6-pin small",
+        "base_detail": "6-pin small with top-cap control grid",
+        "heating": "Indirectly heated, 6.3 V, 0.3 A",
+        "rating_1_label": "Max plate voltage",
+        "rating_1_value": "250 V",
+        "rating_2_label": "Mutual conductance",
+        "rating_2_value": "~1.2 mA/V",
+        "application_short": "Detector, audio voltage amplifier, first-stage RF without AGC",
+        "applications_prose": (
+            "Where the 6D6 was the controlled-gain RF/IF tube, the 6C6 was the "
+            "fixed-gain partner — used as the grid-leak or plate detector, the "
+            "first audio amplifier stage, or as a low-noise RF stage in short-"
+            "wave sets. Paired with a 6D6 in countless 1930s Australian superhets. "
+            "Octal-base successor: 6J7."
+        ),
+        "direct_equivs": ["Type 77", "Mullard SP4"],
+        "substitutes": ["6J7 (octal)", "6SJ7 (octal)", "EF37A (8-pin)"],
+        "value_range": "A$15 – A$25",
+        "value_note": "NOS, boxed, single tube",
+        "value_prose": (
+            "Roughly the same market as the 6D6 — common, plentiful, modestly "
+            "priced. Used pulls A$5–10. The 6C6 is slightly scarcer than the "
+            "6D6 since fewer were needed per set."
+        ),
+        "sources": [
+            ("Radiomuseum.org — 6C6", "https://www.radiomuseum.org/tubes/tube_6c6.html"),
+            ("Frank's Tube Data — 6C6 datasheet", "https://frank.pocnet.net/sheets/049/6/6C6.pdf"),
+            ("The Valve Store (AU)", "https://thevalvestore.com.au/"),
+        ],
+    },
+    {  # 006 — Radiotron 6X5GT
+        "id": "006", "filename": "006-radiotron-6x5gt.html",
+        "brand": "Radiotron", "code": "6X5GT",
+        "function_tag": "Rectifier",
+        "source": "boxes-1.jpeg", "crop": "entry-006-crop.jpeg",
+        "svg_key": "octal",
+        "lede": (
+            "Indirectly-heated full-wave rectifier on the octal base — the "
+            "small-signal partner to the 5Y3GT for receiver-sized B+ supplies. "
+            "Heater is 6.3 V so it can share a transformer winding with the "
+            "signal valves, simplifying AC/DC and car-radio designs."
+        ),
+        "country": "Australia (AWV / RCA-Radiotron)",
+        "first_introduced": "1937",
+        "era": "1937 – late 1960s",
+        "confidence_label": "High · printed factory label",
+        "confidence_class": "high",
+        "function": "Full-wave vacuum rectifier (indirectly heated)",
+        "envelope": "GT-shape",
+        "envelope_detail": "GT-shape glass, ~30 × 80 mm",
+        "base": "Octal (8-pin)",
+        "base_detail": "Octal (8-pin, key-locked centre spigot)",
+        "heating": "Indirectly heated cathode, 6.3 V, 0.6 A",
+        "rating_1_label": "Max plate voltage",
+        "rating_1_value": "350 V RMS per plate",
+        "rating_2_label": "Max DC output",
+        "rating_2_value": "70 mA",
+        "application_short": "B+ supply for receivers, small amps, car radios",
+        "mounting": "Any orientation",
+        "applications_prose": (
+            "The 6X5GT was the rectifier of choice for valve car radios and "
+            "small AC mains receivers from the late 1930s onward, because the "
+            "6.3 V heater meant one transformer winding (or vibrator inverter) "
+            "could supply every valve in the set. Also common in test gear, "
+            "small organs and intercom amplifiers."
+        ),
+        "direct_equivs": ["6X5", "6X5G", "VT-126"],
+        "substitutes": ["5Y3GT (5V heater, ~125 mA)", "EZ80 (B9A)", "EZ81 (B9A)"],
+        "value_range": "A$15 – A$30",
+        "value_note": "NOS, boxed, single tube",
+        "value_prose": (
+            "Common and widely available. Premium for early black-glass GT "
+            "envelopes or Marconi-Osram \"red label\" examples. The closely-"
+            "related 6X4 (B7G miniature) is the post-war replacement in "
+            "compact sets."
+        ),
+        "sources": [
+            ("Radiomuseum.org — 6X5GT", "https://www.radiomuseum.org/tubes/tube_6x5gt.html"),
+            ("Frank's Tube Data — 6X5GT datasheet", "https://frank.pocnet.net/sheets/030/6/6X5GT.pdf"),
+            ("The Valve Store (AU)", "https://thevalvestore.com.au/"),
+        ],
+    },
+    {  # 007 — GEC KT66
+        "id": "007", "filename": "007-gec-kt66.html",
+        "brand": "G.E.C.", "code": "KT66",
+        "function_tag": "Output beam tetrode",
+        "source": "boxes-1.jpeg", "crop": "entry-007-crop.jpeg",
+        "svg_key": "octal",
+        "lede": (
+            "The Marconi-Osram / GEC <strong>KT66</strong> is one of the most "
+            "sought-after British audio output valves ever made — a kinkless "
+            "beam tetrode that became the voice of early Marshall guitar amps, "
+            "the Leak TL12 and the McIntosh MC75. Roughly interchangeable with "
+            "the American 6L6 family, but with a distinctly British tonal "
+            "signature and premium build quality."
+        ),
+        "country": "United Kingdom (Marconi-Osram Valve Co. / GEC, Hammersmith)",
+        "first_introduced": "1937",
+        "era": "1937 – late 1960s (original GEC production)",
+        "confidence_label": "Medium · code handwritten in pencil on the GEC carton",
+        "confidence_class": "medium",
+        "function": "Kinkless (beam) power tetrode",
+        "envelope": "ST / coke-bottle, large",
+        "envelope_detail": "Large ST glass, ~52 × 120 mm",
+        "base": "Octal",
+        "base_detail": "International octal, key-locked centre spigot",
+        "heating": "Indirectly heated cathode, 6.3 V, 1.27 A",
+        "rating_1_label": "Max plate voltage",
+        "rating_1_value": "500 V",
+        "rating_2_label": "Max plate dissipation",
+        "rating_2_value": "25 W",
+        "application_short": "Class-A or AB push-pull audio output (~30 W per pair)",
+        "mounting": "Any orientation; base-down preferred for amps",
+        "mil": "CV1075 (British military)",
+        "applications_prose": (
+            "Originally designed by M-O Valve Co. as a higher-quality British "
+            "answer to the RCA 6L6. Became famous as the output stage of the "
+            "Leak Point One and TL/10 amplifiers, the McIntosh MC30 and MC75, "
+            "and — most famously — early Marshall JTM45 guitar amplifiers "
+            "before Marshall switched to the 5881 / 6L6GC for cost reasons. "
+            "Studio engineers still pay a premium for genuine GEC KT66s for "
+            "Marshall reissues and bespoke hi-fi builds."
+        ),
+        "direct_equivs": ["CV1075 (mil.)", "Genalex KT66 (reissue)"],
+        "substitutes": ["6L6G / 6L6GC", "5881", "7027A (with bias adjust)"],
+        "value_range": "A$200 – A$400+",
+        "value_note": "NOS, boxed, single tube · matched pairs higher",
+        "value_prose": (
+            "Genuine GEC / M-O Valve KT66s in original GEC cartons are the "
+            "premium tier: A$300 / pair is common on Aussie Audio Mart and "
+            "matched quads run A$500–700. Reissue Genalex (New Sensor) tubes "
+            "sell for A$80–120 each new and don't trade on the vintage market. "
+            "Authenticate by the GEC etch on the glass and the brown micanol "
+            "base — fakes exist."
+        ),
+        "sources": [
+            ("Radiomuseum.org — KT66", "https://www.radiomuseum.org/tubes/tube_kt66.html"),
+            ("Frank's Tube Data — KT66 datasheet", "https://frank.pocnet.net/sheets/010/k/KT66.pdf"),
+            ("Aussie Audio Mart — GEC KT66 NOS listings", "https://www.aussieaudiomart.com/details/649323642-very-rare-gec-kt66-nos-valve-collection/"),
+            ("Watford Valves — KT66 reference", "https://www.watfordvalves.com/products.asp?search=kt66"),
+        ],
+    },
+]
+
+
+def main() -> None:
+    for e in ENTRIES_DATA:
+        html = render(e)
+        (ENTRIES / e["filename"]).write_text(html)
+        print(f"wrote entries/{e['filename']}  ({len(html):,} bytes)")
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Valve Catalogue — Radiotron 80</title>
+<style>
+  :root {
+    --bg: #fafaf7;
+    --ink: #1d1d1b;
+    --muted: #6b6b66;
+    --line: #d9d4c7;
+    --accent: #8a1c1c;
+    --accent-soft: #f3e7e7;
+    --card: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 32px 24px 64px;
+    font-family: "Helvetica Neue", "Inter", system-ui, sans-serif;
+    background: var(--bg); color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+  .sheet {
+    max-width: 920px; margin: 0 auto;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.02), 0 6px 24px rgba(40,30,10,0.06);
+    overflow: hidden;
+  }
+  header {
+    padding: 24px 32px 18px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap;
+  }
+  header .eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  header h1 {
+    margin: 0; font-size: 36px; font-weight: 700; letter-spacing: -0.01em;
+  }
+  header h1 .code { color: var(--accent); }
+  header .tag {
+    display: inline-block; padding: 3px 10px; border-radius: 999px;
+    background: var(--accent-soft); color: var(--accent);
+    font-size: 12px; font-weight: 600; letter-spacing: 0.04em;
+  }
+  header .id {
+    margin-left: auto; font-size: 12px; color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .lede {
+    padding: 12px 32px 22px; color: var(--muted);
+    border-bottom: 1px solid var(--line);
+    font-size: 15px; line-height: 1.55;
+  }
+  .imgs {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .imgs figure {
+    margin: 0; padding: 20px 24px; text-align: center;
+    border-right: 1px solid var(--line);
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+  }
+  .imgs figure:last-child { border-right: 0; }
+  .imgs img, .imgs svg {
+    max-width: 100%; height: 220px; width: auto;
+    border-radius: 4px;
+  }
+  .imgs figcaption {
+    font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .grid {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+  }
+  section {
+    padding: 20px 32px;
+    border-bottom: 1px solid var(--line);
+  }
+  section.col { border-right: 1px solid var(--line); }
+  section.col:nth-child(2n) { border-right: 0; }
+  section h2 {
+    margin: 0 0 12px; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
+  }
+  dl {
+    margin: 0; display: grid;
+    grid-template-columns: 38% 62%;
+    row-gap: 6px; column-gap: 12px;
+    font-size: 14px; line-height: 1.45;
+  }
+  dt { color: var(--muted); font-weight: 500; }
+  dd { margin: 0; color: var(--ink); }
+  dd strong { color: var(--accent); }
+  .prose { font-size: 14px; line-height: 1.6; }
+  .prose p { margin: 0 0 10px; }
+  .pillrow { display: flex; flex-wrap: wrap; gap: 6px; }
+  .pill {
+    display: inline-block; padding: 4px 10px;
+    background: #f1efe8; border: 1px solid var(--line);
+    border-radius: 999px; font-size: 12px; color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .pill.same { background: #eef5ee; border-color: #c8dfc8; color: #1f4a1f; }
+  .pill.alt  { background: #fff6e1; border-color: #ecd99a; color: #6a4a08; }
+  .value-row {
+    display: flex; align-items: baseline; gap: 14px;
+    font-variant-numeric: tabular-nums;
+  }
+  .value-row .big { font-size: 22px; font-weight: 700; }
+  .value-row .note { font-size: 12px; color: var(--muted); }
+  footer {
+    padding: 18px 32px 22px;
+    font-size: 12px; color: var(--muted); line-height: 1.55;
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+  .conf {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px; border-radius: 999px;
+    font-size: 12px; font-weight: 600;
+  }
+  .conf.high   { background: #eef5ee; color: #1f4a1f; }
+  .conf.medium { background: #fff6e1; color: #6a4a08; }
+  .conf.low    { background: #fdecec; color: #7a1c1c; }
+  .conf .dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; opacity: 0.7; }
+  @media (max-width: 720px) {
+    .imgs { grid-template-columns: 1fr; }
+    .imgs figure { border-right: 0; border-bottom: 1px solid var(--line); }
+    .grid { grid-template-columns: 1fr; }
+    section.col { border-right: 0; }
+    dl { grid-template-columns: 40% 60%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+
+  <header>
+    <span class="tag">Rectifier</span>
+    <div>
+      <div class="eyebrow">Valve Catalogue · Entry</div>
+      <h1>Radiotron <span class="code">80</span></h1>
+    </div>
+    <span class="id">Entry #002 · Source: boxes-1.jpeg</span>
+  </header>
+
+  <p class="lede">
+    Pre-octal full-wave high-vacuum rectifier — one of the original Western Electric / RCA tube families, dating to 1927. 5-volt, 2-amp directly-heated filament on the 4-pin UX socket. The octal-era replacement is the <strong>5Y3G</strong>, with which the 80 is electrically identical.
+  </p>
+
+  <div class="imgs">
+    <figure>
+      <img src="data:image/jpeg;base64,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" alt="Photograph of the Radiotron 80 valve box, cropped from the catalogue source image.">
+      <figcaption>Source photo · cropped from boxes-1.jpeg</figcaption>
+    </figure>
+    <figure>
+      <svg viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg" aria-label="ST-shape valve with UX4 base.">
+  <defs>
+    <linearGradient id="glass" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#dfe6ec"/>
+      <stop offset="0.5" stop-color="#f6f9fc"/>
+      <stop offset="1" stop-color="#b8c2cb"/>
+    </linearGradient>
+    <linearGradient id="base" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#2a1f15"/>
+      <stop offset="1" stop-color="#181009"/>
+    </linearGradient>
+  </defs>
+  <path d="M70,40 Q70,18 100,18 Q130,18 130,40 L150,120 Q150,180 100,180 Q50,180 50,120 Z" fill="url(#glass)" stroke="#3a3a3a" stroke-width="1.3"/>
+  <circle cx="100" cy="18" r="3" fill="#222"/>
+  <rect x="78" y="60" width="18" height="70" fill="#3b3b3b" stroke="#222" stroke-width="0.8"/>
+  <rect x="104" y="60" width="18" height="70" fill="#3b3b3b" stroke="#222" stroke-width="0.8"/>
+  <path d="M87,130 Q100,150 113,130" fill="none" stroke="#c84a14" stroke-width="1.3"/>
+  <line x1="100" y1="55" x2="100" y2="180" stroke="#666" stroke-width="0.6"/>
+  <rect x="60" y="180" width="80" height="38" rx="3" fill="url(#base)"/>
+  <rect x="60" y="180" width="80" height="6" fill="#0d0805"/>
+  <rect x="70" y="218" width="8" height="34" rx="2" fill="#b9a37a" stroke="#6a5b3e"/>
+  <rect x="122" y="218" width="8" height="34" rx="2" fill="#b9a37a" stroke="#6a5b3e"/>
+  <rect x="92" y="218" width="5" height="30" rx="1.5" fill="#b9a37a" stroke="#6a5b3e"/>
+  <rect x="103" y="218" width="5" height="30" rx="1.5" fill="#b9a37a" stroke="#6a5b3e"/>
+  <text x="100" y="206" text-anchor="middle" font-family="Helvetica, sans-serif" font-size="9" fill="#e7d6a8" letter-spacing="1.5">80</text>
+</svg>
+
+      <figcaption>Reference · ST-shape envelope, UX4 base</figcaption>
+    </figure>
+  </div>
+
+  <div class="grid">
+    <section class="col">
+      <h2>Identification</h2>
+      <dl>
+        <dt>Code</dt><dd><strong>80</strong></dd>
+        <dt>Brand on box</dt><dd>Radiotron</dd>
+        <dt>Country of origin</dt><dd>Australia (AWV / RCA-Radiotron), originally USA (RCA)</dd>
+        <dt>First introduced</dt><dd>1927 (RCA UX-280)</dd>
+        <dt>Era</dt><dd>1927 – late 1950s</dd>
+        <dt>Confidence</dt><dd><span class="conf high"><span class="dot"></span>High · printed factory label</span></dd>
+        <dt>Count in photo</dt><dd>4 boxes present</dd>
+      </dl>
+    </section>
+
+    <section class="col">
+      <h2>Type &amp; construction</h2>
+      <dl>
+        <dt>Function</dt><dd><strong>Full-wave vacuum rectifier</strong></dd>
+        <dt>Envelope</dt><dd>ST-shape glass, ~52 × 130 mm</dd>
+        <dt>Base</dt><dd>UX4 (4 pins, 2 thick / 2 thin)</dd>
+        <dt>Heating</dt><dd>Directly heated filament, 5.0 V AC, 2.0 A</dd>
+        <dt>Heater drop</dt><dd>~50 V</dd>
+      </dl>
+    </section>
+
+    <section class="col">
+      <h2>Key ratings</h2>
+      <dl>
+        <dt>Max plate voltage</dt><dd>~350 V RMS per plate</dd>
+        <dt>Max DC output</dt><dd>~125 mA</dd>
+        <dt>Application</dt><dd>HT (B+) supply in domestic receivers &amp; small amps</dd>
+        <dt>Mounting</dt><dd>Vertical, base down</dd>
+        <dt>Mil. designation</dt><dd>VT-71 (military designation)</dd>
+      </dl>
+    </section>
+
+    <section class="col">
+      <h2>Typical applications</h2>
+      <div class="prose">
+        <p>The 80 was the standard B+ rectifier in AC-mains broadcast receivers from the late 1920s through the 1940s — most Radiola, Astor and AWA console sets of the era used one. Also common in Hammond-style organs and laboratory power supplies that needed a modest-current rectifier on the older 4-pin socket.</p>
+      </div>
+    </section>
+
+    <section class="col">
+      <h2>Equivalents &amp; substitutes</h2>
+      <div class="prose">
+        <p style="margin-bottom:8px;"><strong>Direct equivalents</strong> (same electricals &amp; base):</p>
+        <div class="pillrow" style="margin-bottom:12px;"><span class="pill same">UX-280</span><span class="pill same">5Y3 (early)</span><span class="pill same">KX-80</span></div>
+        <p style="margin-bottom:8px;"><strong>Electrically same, different base</strong> (needs adapter / rewire):</p>
+        <div class="pillrow"><span class="pill alt">5Y3G (octal)</span><span class="pill alt">5Y3GT (octal)</span><span class="pill alt">5T4</span></div>
+      </div>
+    </section>
+
+    <section class="col">
+      <h2>Approximate market value</h2>
+      <div class="value-row">
+        <div class="big">A$20 – A$45</div>
+        <div class="note">NOS, boxed, single tube</div>
+      </div>
+      <div class="prose" style="margin-top:10px;">
+        <p>Common Australian-made AWV / Radiotron stock is at the lower end; early RCA mesh-plate or balloon-shape (UX-280) variants trade higher. Used / tested-good pulls A$8–20.</p>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <strong>Sources:</strong>
+    <a href="https://www.radiomuseum.org/tubes/tube_80.html">Radiomuseum.org — 80</a> ·
+    <a href="https://frank.pocnet.net/sheets/049/8/80.pdf">Frank's Tube Data — 80 datasheet</a> ·
+    <a href="https://thevalvestore.com.au/">The Valve Store (AU)</a> ·
+    <a href="https://www.aussieaudiomart.com/">Aussie Audio Mart — vintage valve listings</a>
+    <br><br>
+    <em>Catalogue entry · generated from boxes-1.jpeg.</em>
+  </footer>
+
+</div>
+
+</body>
+</html>

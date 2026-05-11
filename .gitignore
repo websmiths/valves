@@ -8,5 +8,7 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Session-local Claude artefacts
-.claude/
+# Session-local Claude artefacts (but DO commit project skills/commands)
+.claude/*
+!.claude/skills/
+!.claude/commands/

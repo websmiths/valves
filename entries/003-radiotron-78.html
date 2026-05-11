@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Valve Catalogue — Radiotron 78</title>
+<style>
+  :root {
+    --bg: #fafaf7;
+    --ink: #1d1d1b;
+    --muted: #6b6b66;
+    --line: #d9d4c7;
+    --accent: #8a1c1c;
+    --accent-soft: #f3e7e7;
+    --card: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 32px 24px 64px;
+    font-family: "Helvetica Neue", "Inter", system-ui, sans-serif;
+    background: var(--bg); color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+  .sheet {
+    max-width: 920px; margin: 0 auto;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.02), 0 6px 24px rgba(40,30,10,0.06);
+    overflow: hidden;
+  }
+  header {
+    padding: 24px 32px 18px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap;
+  }
+  header .eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  header h1 {
+    margin: 0; font-size: 36px; font-weight: 700; letter-spacing: -0.01em;
+  }
+  header h1 .code { color: var(--accent); }
+  header .tag {
+    display: inline-block; padding: 3px 10px; border-radius: 999px;
+    background: var(--accent-soft); color: var(--accent);
+    font-size: 12px; font-weight: 600; letter-spacing: 0.04em;
+  }
+  header .id {
+    margin-left: auto; font-size: 12px; color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .lede {
+    padding: 12px 32px 22px; color: var(--muted);
+    border-bottom: 1px solid var(--line);
+    font-size: 15px; line-height: 1.55;
+  }
+  .imgs {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .imgs figure {
+    margin: 0; padding: 20px 24px; text-align: center;
+    border-right: 1px solid var(--line);
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+  }
+  .imgs figure:last-child { border-right: 0; }
+  .imgs img, .imgs svg {
+    max-width: 100%; height: 220px; width: auto;
+    border-radius: 4px;
+  }
+  .imgs figcaption {
+    font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .grid {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+  }
+  section {
+    padding: 20px 32px;
+    border-bottom: 1px solid var(--line);
+  }
+  section.col { border-right: 1px solid var(--line); }
+  section.col:nth-child(2n) { border-right: 0; }
+  section h2 {
+    margin: 0 0 12px; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
+  }
+  dl {
+    margin: 0; display: grid;
+    grid-template-columns: 38% 62%;
+    row-gap: 6px; column-gap: 12px;
+    font-size: 14px; line-height: 1.45;
+  }
+  dt { color: var(--muted); font-weight: 500; }
+  dd { margin: 0; color: var(--ink); }
+  dd strong { color: var(--accent); }
+  .prose { font-size: 14px; line-height: 1.6; }
+  .prose p { margin: 0 0 10px; }
+  .pillrow { display: flex; flex-wrap: wrap; gap: 6px; }
+  .pill {
+    display: inline-block; padding: 4px 10px;
+    background: #f1efe8; border: 1px solid var(--line);
+    border-radius: 999px; font-size: 12px; color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .pill.same { background: #eef5ee; border-color: #c8dfc8; color: #1f4a1f; }
+  .pill.alt  { background: #fff6e1; border-color: #ecd99a; color: #6a4a08; }
+  .value-row {
+    display: flex; align-items: baseline; gap: 14px;
+    font-variant-numeric: tabular-nums;
+  }
+  .value-row .big { font-size: 22px; font-weight: 700; }
+  .value-row .note { font-size: 12px; color: var(--muted); }
+  footer {
+    padding: 18px 32px 22px;
+    font-size: 12px; color: var(--muted); line-height: 1.55;
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+  .conf {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px; border-radius: 999px;
+    font-size: 12px; font-weight: 600;
+  }
+  .conf.high   { background: #eef5ee; color: #1f4a1f; }
+  .conf.medium { background: #fff6e1; color: #6a4a08; }
+  .conf.low    { background: #fdecec; color: #7a1c1c; }
+  .conf .dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; opacity: 0.7; }
+  @media (max-width: 720px) {
+    .imgs { grid-template-columns: 1fr; }
+    .imgs figure { border-right: 0; border-bottom: 1px solid var(--line); }
+    .grid { grid-template-columns: 1fr; }
+    section.col { border-right: 0; }
+    dl { grid-template-columns: 40% 60%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+
+  <header>
+    <span class="tag">RF / IF pentode</span>
+    <div>
+      <div class="eyebrow">Valve Catalogue · Entry</div>
+      <h1>Radiotron <span class="code">78</span></h1>
+    </div>
+    <span class="id">Entry #003 · Source: boxes-1.jpeg</span>
+  </header>
+
+  <p class="lede">
+    Variable-mu (remote-cutoff) RF / IF pentode introduced by RCA in 1932. Effectively identical electricals to the better-known <strong>6D6</strong> — same heater, same 6-pin small base, same characteristics — and the two are routinely listed as direct equivalents.
+  </p>
+
+  <div class="imgs">
+    <figure>
+      <img src="data:image/jpeg;base64,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" alt="Photograph of the Radiotron 78 valve box, cropped from the catalogue source image.">
+      <figcaption>Source photo · cropped from boxes-1.jpeg</figcaption>
+    </figure>
+    <figure>
+      <svg viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg" aria-label="ST-shape valve with UX4 base.">
+  <defs>
+    <linearGradient id="glass" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#dfe6ec"/>
+      <stop offset="0.5" stop-color="#f6f9fc"/>
+      <stop offset="1" stop-color="#b8c2cb"/>
+    </linearGradient>
+    <linearGradient id="base" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#2a1f15"/>
+      <stop offset="1" stop-color="#181009"/>
+    </linearGradient>
+  </defs>
+  <path d="M70,40 Q70,18 100,18 Q130,18 130,40 L150,120 Q150,180 100,180 Q50,180 50,120 Z" fill="url(#glass)" stroke="#3a3a3a" stroke-width="1.3"/>
+  <circle cx="100" cy="18" r="3" fill="#222"/>
+  <rect x="78" y="60" width="18" height="70" fill="#3b3b3b" stroke="#222" stroke-width="0.8"/>
+  <rect x="104" y="60" width="18" height="70" fill="#3b3b3b" stroke="#222" stroke-width="0.8"/>
+  <path d="M87,130 Q100,150 113,130" fill="none" stroke="#c84a14" stroke-width="1.3"/>
+  <line x1="100" y1="55" x2="100" y2="180" stroke="#666" stroke-width="0.6"/>
+  <rect x="60" y="180" width="80" height="38" rx="3" fill="url(#base)"/>
+  <rect x="60" y="180" width="80" height="6" fill="#0d0805"/>
+  <rect x="70" y="218" width="8" height="34" rx="2" fill="#b9a37a" stroke="#6a5b3e"/>
+  <rect x="122" y="218" width="8" height="34" rx="2" fill="#b9a37a" stroke="#6a5b3e"/>
+  <rect x="92" y="218" width="5" height="30" rx="1.5" fill="#b9a37a" stroke="#6a5b3e"/>
+  <rect x="103" y="218" width="5" height="30" rx="1.5" fill="#b9a37a" stroke="#6a5b3e"/>
+  <text x="100" y="206" text-anchor="middle" font-family="Helvetica, sans-serif" font-size="9" fill="#e7d6a8" letter-spacing="1.5">78</text>
+</svg>
+
+      <figcaption>Reference · ST-shape envelope, 6-pin small ("small 6") base</figcaption>
+    </figure>
+  </div>
+
+  <div class="grid">
+    <section class="col">
+      <h2>Identification</h2>
+      <dl>
+        <dt>Code</dt><dd><strong>78</strong></dd>
+        <dt>Brand on box</dt><dd>Radiotron</dd>
+        <dt>Country of origin</dt><dd>Australia (AWV / RCA-Radiotron)</dd>
+        <dt>First introduced</dt><dd>1932</dd>
+        <dt>Era</dt><dd>1932 – mid 1950s</dd>
+        <dt>Confidence</dt><dd><span class="conf high"><span class="dot"></span>High · printed factory label</span></dd>
+        
+      </dl>
+    </section>
+
+    <section class="col">
+      <h2>Type &amp; construction</h2>
+      <dl>
+        <dt>Function</dt><dd><strong>Remote-cutoff RF / IF pentode (variable-mu)</strong></dd>
+        <dt>Envelope</dt><dd>ST-shape glass, top-cap control grid</dd>
+        <dt>Base</dt><dd>6-pin small with top-cap control grid</dd>
+        <dt>Heating</dt><dd>Indirectly heated, 6.3 V, 0.3 A</dd>
+        
+      </dl>
+    </section>
+
+    <section class="col">
+      <h2>Key ratings</h2>
+      <dl>
+        <dt>Max plate voltage</dt><dd>250 V</dd>
+        <dt>Mutual conductance</dt><dd>~1.45 mA/V</dd>
+        <dt>Application</dt><dd>RF and IF amplification with AGC (variable-mu action)</dd>
+        
+        
+      </dl>
+    </section>
+
+    <section class="col">
+      <h2>Typical applications</h2>
+      <div class="prose">
+        <p>Standard variable-mu pentode in mid-1930s superhet broadcast and short-wave receivers — the RF and IF stages of almost every domestic radio from about 1933 to 1936, before the octal-base 6U7G and miniature 6BA6 took over. Pairs naturally with the sharp-cutoff 6C6 as detector / first-AF.</p>
+      </div>
+    </section>
+
+    <section class="col">
+      <h2>Equivalents &amp; substitutes</h2>
+      <div class="prose">
+        <p style="margin-bottom:8px;"><strong>Direct equivalents</strong> (same electricals &amp; base):</p>
+        <div class="pillrow" style="margin-bottom:12px;"><span class="pill same">6D6</span><span class="pill same">Mullard VMP4G</span></div>
+        <p style="margin-bottom:8px;"><strong>Electrically same, different base</strong> (needs adapter / rewire):</p>
+        <div class="pillrow"><span class="pill alt">6U7G (octal)</span><span class="pill alt">6K7 (octal, metal)</span><span class="pill alt">6BA6 (B7G miniature)</span></div>
+      </div>
+    </section>
+
+    <section class="col">
+      <h2>Approximate market value</h2>
+      <div class="value-row">
+        <div class="big">A$15 – A$30</div>
+        <div class="note">NOS, boxed, single tube</div>
+      </div>
+      <div class="prose" style="margin-top:10px;">
+        <p>Plentiful in vintage-radio circles, so prices stay modest. Used / tested-good pulls A$5–12. Premium for sealed RCA black-plate or Marconi-Osram examples.</p>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <strong>Sources:</strong>
+    <a href="https://www.radiomuseum.org/tubes/tube_78.html">Radiomuseum.org — 78</a> ·
+    <a href="https://frank.pocnet.net/sheets/049/7/78.pdf">Frank's Tube Data — 78 datasheet</a> ·
+    <a href="https://thevalvestore.com.au/">The Valve Store (AU)</a>
+    <br><br>
+    <em>Catalogue entry · generated from boxes-1.jpeg.</em>
+  </footer>
+
+</div>
+
+</body>
+</html>
