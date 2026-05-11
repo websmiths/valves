@@ -196,6 +196,27 @@ def render(e: dict, all_entries: list[dict]) -> str:
         f'<dt>Mil. designation</dt><dd>{e["mil"]}</dd>' if e.get("mil") else ""
     )
     sidebar = render_sidebar(e["id"], all_entries)
+
+    # Inventory rows in the Identification block:
+    #   - "Inventory": total count (only shown when >1 — otherwise implicit)
+    #   - "Also in": secondary source photos beyond the primary one
+    count_row = ""
+    raw_count = e.get("count")
+    try:
+        count_n = int(str(raw_count).strip())
+    except (TypeError, ValueError):
+        # Free-form legacy count strings (e.g. "≈ 5 boxes present") — show as-is
+        count_n = None
+    if count_n is not None and count_n > 1:
+        count_row = f'<dt>Inventory</dt><dd><strong>{count_n}</strong> in collection</dd>'
+    elif raw_count and count_n is None:
+        count_row = f'<dt>Inventory</dt><dd>{raw_count}</dd>'
+
+    extra_sources_row = ""
+    extras = e.get("additional_sources") or []
+    if extras:
+        links = ", ".join(f"<code>{s}</code>" for s in extras)
+        extra_sources_row = f'<dt>Also in</dt><dd>{links}</dd>'
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -251,7 +272,8 @@ def render(e: dict, all_entries: list[dict]) -> str:
         <dt>First introduced</dt><dd>{e['first_introduced']}</dd>
         <dt>Era</dt><dd>{e['era']}</dd>
         <dt>Confidence</dt><dd>{conf_pill(e['confidence_label'], e['confidence_class'])}</dd>
-        {f'<dt>Count in photo</dt><dd>{e["count"]}</dd>' if e.get('count') else ''}
+        {count_row}
+        {extra_sources_row}
       </dl>
     </section>
 

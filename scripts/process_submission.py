@@ -200,6 +200,30 @@ def slugify(s: str) -> str:
     return s.strip("-")
 
 
+def normalise_code(code: str) -> str:
+    """Canonical form for code-matching: uppercase, no whitespace."""
+    return re.sub(r"\s+", "", code).upper()
+
+
+def parse_count(value: str | int | None) -> int:
+    """Best-effort: extract the first integer from a free-form count string."""
+    if isinstance(value, int):
+        return value
+    if not value:
+        return 1
+    m = re.search(r"\d+", str(value))
+    return int(m.group(0)) if m else 1
+
+
+def find_existing_entry(entries: list[dict], code: str) -> dict | None:
+    """Return the first entry whose code matches (normalised), or None."""
+    target = normalise_code(code)
+    for e in entries:
+        if normalise_code(e.get("code", "")) == target:
+            return e
+    return None
+
+
 def next_source_filename(extension: str = "jpeg") -> str:
     pattern = re.compile(r"^boxes-(\d+)\.(jpe?g|png|webp)$", re.I)
     nums = []
@@ -514,7 +538,8 @@ def write_pr_body(
     submission_id: str,
     source_image_basename: str,
     note: str,
-    new_entries: list[dict],
+    created_entries: list[dict],
+    updated_entries: list[dict],   # [{"entry": dict, "added": int}, …]
     unaccounted: list[str],
     suspicious_note: str | None,
     out_path: Path = Path("/tmp/pr-body.md"),
@@ -531,19 +556,34 @@ def write_pr_body(
     else:
         lines.append("- **Submitter's note:** (none)")
     lines.append("")
-    lines.append("### Boxes identified")
+    lines.append("### New entries")
     lines.append("")
-    if new_entries:
-        for e in new_entries:
+    if created_entries:
+        for e in created_entries:
+            cnt = parse_count(e.get("count"))
+            qty = f" ×{cnt}" if cnt > 1 else ""
             lines.append(
-                f"- **{e['id']}** · `{e['code']}` · {e['brand']} · {e['confidence_label']}"
+                f"- **{e['id']}** · `{e['code']}` · {e['brand']}{qty} · {e['confidence_label']}"
+            )
+    else:
+        lines.append("- (none — all identified boxes matched existing entries)")
+    lines.append("")
+    lines.append("### Existing entries updated (inventory grew)")
+    lines.append("")
+    if updated_entries:
+        for u in updated_entries:
+            e = u["entry"]
+            new_total = parse_count(e.get("count"))
+            lines.append(
+                f"- **{e['id']}** · `{e['code']}` · {e['brand']} · "
+                f"+{u['added']} from this photo → total {new_total}"
             )
     else:
         lines.append("- (none)")
     lines.append("")
     lines.append("### Confidence flags")
     lines.append("")
-    flags = [e for e in new_entries if e["confidence_class"] in ("medium", "low")]
+    flags = [e for e in created_entries if e.get("confidence_class") in ("medium", "low")]
     if flags:
         for e in flags:
             lines.append(f"- **{e['id']}** · `{e['code']}` · {e['confidence_label']}")
@@ -591,7 +631,8 @@ def main() -> int:
 
     # We expect exactly one submission per run (workflow scopes by trigger
     # SHA), but loop defensively just in case.
-    all_new_entries: list[dict] = []
+    created_entries: list[dict] = []                  # newly-added types
+    updated_entries: list[dict] = []                  # {entry, added_count}
     all_unaccounted: list[str] = []
     suspicious_note: str | None = None
     source_image_basename: str = ""
@@ -631,24 +672,54 @@ def main() -> int:
         if result.get("suspicious_note_content"):
             suspicious_note = result["suspicious_note_content"]
 
-        # Crop each box's region and construct entry dicts
+        # ─── Group LLM's boxes by normalised code (multiples of the same
+        # valve in one photo → one entry with a count, not N duplicates).
+        groups: dict[str, list[dict]] = {}
         for box in boxes:
-            new_id = f"{next_entry_id(entries):03d}"
-            crop_filename = f"entry-{new_id}-crop.jpeg"
-            try:
-                crop_image(image_path, box.get("crop_region", {}),
-                           CROPS / crop_filename)
-            except Exception as e:
-                print(f"crop failed for box {box.get('code')}: {e}", file=sys.stderr)
+            code = box.get("code", "").strip()
+            if not code:
                 continue
-            entry = build_entry_dict(
-                box,
-                entry_id=new_id,
-                source_image_basename=source_image_basename,
-                crop_filename=crop_filename,
-            )
-            entries.append(entry)
-            all_new_entries.append(entry)
+            groups.setdefault(normalise_code(code), []).append(box)
+        print(f"  identified {len(boxes)} boxes → {len(groups)} distinct types")
+
+        # ─── For each type: merge into existing entry, or create new.
+        for code_key, group in groups.items():
+            rep = group[0]  # representative box for crop + entry data
+            n_in_photo = len(group)
+            existing = find_existing_entry(entries, code_key)
+
+            if existing:
+                # MERGE: bump count, append this photo to additional_sources
+                existing.setdefault("additional_sources", [])
+                if source_image_basename not in existing["additional_sources"] \
+                        and source_image_basename != existing.get("source"):
+                    existing["additional_sources"].append(source_image_basename)
+                old_n = parse_count(existing.get("count"))
+                new_n = old_n + n_in_photo
+                existing["count"] = str(new_n)
+                updated_entries.append({"entry": existing, "added": n_in_photo})
+                print(f"  ↻ updated {existing['id']} ({rep['code']}) +{n_in_photo} → total {new_n}")
+            else:
+                # CREATE: new entry with its own crop
+                new_id = f"{next_entry_id(entries):03d}"
+                crop_filename = f"entry-{new_id}-crop.jpeg"
+                try:
+                    crop_image(image_path, rep.get("crop_region", {}),
+                               CROPS / crop_filename)
+                except Exception as e:
+                    print(f"crop failed for box {rep.get('code')}: {e}", file=sys.stderr)
+                    continue
+                entry = build_entry_dict(
+                    rep,
+                    entry_id=new_id,
+                    source_image_basename=source_image_basename,
+                    crop_filename=crop_filename,
+                )
+                if n_in_photo > 1:
+                    entry["count"] = str(n_in_photo)
+                entries.append(entry)
+                created_entries.append(entry)
+                print(f"  ＋ created {new_id} ({rep['code']}) ×{n_in_photo}")
 
         all_unaccounted.extend(unaccounted)
 
@@ -682,12 +753,15 @@ def main() -> int:
         submission_id=submission_id,
         source_image_basename=source_image_basename,
         note=note_text,
-        new_entries=all_new_entries,
+        created_entries=created_entries,
+        updated_entries=updated_entries,
         unaccounted=all_unaccounted,
         suspicious_note=suspicious_note,
     )
 
-    print(f"Processed {len(all_new_entries)} new entries; {len(all_unaccounted)} unaccounted.")
+    print(f"Processed: {len(created_entries)} new entries, "
+          f"{len(updated_entries)} existing entries updated, "
+          f"{len(all_unaccounted)} unaccounted.")
     return 0
 
 
