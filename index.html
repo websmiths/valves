@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Valves — Catalogue Index</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --bg: #fafaf7; --ink: #1d1d1b; --muted: #6b6b66;
+    --line: #d9d4c7; --accent: #8a1c1c; --accent-soft: #f3e7e7;
+    --card: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 48px 24px 80px;
+    font-family: "Helvetica Neue", "Inter", system-ui, sans-serif;
+    background: var(--bg); color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; }
+  .eyebrow {
+    font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 8px;
+  }
+  h1 {
+    margin: 0 0 12px; font-size: 44px; font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+  h1 .accent { color: var(--accent); }
+  .lede {
+    color: var(--muted); font-size: 16px; line-height: 1.6;
+    max-width: 640px; margin: 0 0 40px;
+  }
+  .stats {
+    display: flex; gap: 28px; padding: 18px 22px;
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 6px; margin-bottom: 32px;
+    font-variant-numeric: tabular-nums;
+  }
+  .stat .n { font-size: 24px; font-weight: 700; }
+  .stat .l { font-size: 11px; letter-spacing: 0.12em;
+             text-transform: uppercase; color: var(--muted); }
+  h2 {
+    font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--muted); margin: 32px 0 12px; font-weight: 700;
+  }
+  ul.entries {
+    list-style: none; padding: 0; margin: 0;
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 6px; overflow: hidden;
+  }
+  ul.entries li { border-bottom: 1px solid var(--line); }
+  ul.entries li:last-child { border-bottom: 0; }
+  ul.entries a {
+    display: flex; align-items: center; gap: 16px;
+    padding: 14px 20px; text-decoration: none; color: var(--ink);
+  }
+  ul.entries a:hover { background: #f4f1ea; }
+  .num {
+    font-variant-numeric: tabular-nums; color: var(--muted);
+    font-size: 12px; width: 36px;
+  }
+  .code {
+    font-weight: 700; font-size: 18px; color: var(--accent);
+    min-width: 90px;
+  }
+  .brand { font-weight: 500; min-width: 120px; }
+  .desc { color: var(--muted); font-size: 14px; flex: 1; }
+  .arrow { color: var(--muted); font-size: 18px; }
+  footer {
+    margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--line);
+    font-size: 12px; color: var(--muted);
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="eyebrow">Component Catalogue</div>
+  <h1>Valves<span class="accent">.</span></h1>
+  <p class="lede">
+    A working catalogue of a collection of vintage vacuum tubes (valves),
+    built from photographs of the original boxes. Each entry pairs the
+    box scan with manufacturer data, equivalents and substitutes,
+    typical applications, and an indicative market value.
+  </p>
+
+  <div class="stats">
+    <div class="stat"><div class="n">1</div><div class="l">Entries</div></div>
+    <div class="stat"><div class="n">1</div><div class="l">Source photos</div></div>
+    <div class="stat"><div class="n">~40</div><div class="l">Boxes pending</div></div>
+  </div>
+
+  <h2>Entries</h2>
+  <ul class="entries">
+    <li>
+      <a href="entries/001-rca-5z3.html">
+        <span class="num">001</span>
+        <span class="code">5Z3</span>
+        <span class="brand">RCA</span>
+        <span class="desc">Full-wave vacuum rectifier · UX4 base · 5V/3A heater</span>
+        <span class="arrow">›</span>
+      </a>
+    </li>
+  </ul>
+
+  <h2>Source photos</h2>
+  <ul class="entries">
+    <li>
+      <a href="src-images/boxes-1.jpeg">
+        <span class="num">01</span>
+        <span class="code">boxes-1</span>
+        <span class="brand"></span>
+        <span class="desc">Tray of ~40 valve boxes — RCA, Radiotron, Mullard, Brimar, G.E.C., Marconi</span>
+        <span class="arrow">›</span>
+      </a>
+    </li>
+  </ul>
+
+  <footer>
+    Repository: <a href="https://github.com/websmiths/valves">github.com/websmiths/valves</a>
+  </footer>
+</div>
+</body>
+</html>

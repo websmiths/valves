@@ -1,0 +1,12 @@
+# Scratch & intermediate files generated while building entries
+outputs/
+*.b64
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Session-local Claude artefacts
+.claude/
