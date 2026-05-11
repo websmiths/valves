@@ -33,8 +33,15 @@ jobs:
 
     steps:
       - name: Checkout
+        # Always work against the current tip of main, not the trigger SHA.
+        # The Worker creates separate commits for image and note, so two
+        # workflow runs queue up; checking out by SHA would have each run
+        # working on a stale view. With ref: main, both runs see the same
+        # current tree, and the second run's "exit early if no submissions"
+        # check naturally short-circuits.
         uses: actions/checkout@v4
         with:
+          ref: main
           fetch-depth: 0
 
       - name: Set up Node
@@ -245,4 +252,17 @@ jobs:
             exit 0
           fi
           git commit -m "submission: ${{ steps.scan.outputs.summary }} [bot]"
-          git push origin main
+          # Rebase onto current main in case another commit (e.g. the
+          # Worker's separate note commit, or a manual edit) landed during
+          # the Claude run. Push retries are deliberately bounded — if
+          # rebase fails or remote keeps moving, fail loudly.
+          for attempt in 1 2 3; do
+            if git pull --rebase origin main && git push origin main; then
+              echo "Pushed on attempt $attempt"
+              exit 0
+            fi
+            echo "Push attempt $attempt failed; retrying after 2s"
+            sleep 2
+          done
+          echo "Could not push after 3 attempts" >&2
+          exit 1
