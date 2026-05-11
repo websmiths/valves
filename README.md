@@ -63,6 +63,14 @@ white Mullard boxes whose codes aren't legible at the photo's
 resolution. See [`outputs/boxes-1-tally.md`](outputs/boxes-1-tally.md)
 for the master sweep.
 
+`boxes-2.jpeg` and `boxes-3.jpeg` are two further submissions of the
+same tray (the two uploads are byte-identical to each other). They show
+the same arrangement of boxes as `boxes-1.jpeg` and don't resolve any
+of the previously unreadable handwritten codes at higher confidence —
+no new entries were added from these photos. The handwritten /
+unreadable cartons listed under *Unaccounted boxes* below still need a
+physical pass to identify.
+
 ## Verification flags
 
 A running list of entries that warrant a physical check, and other things
@@ -112,6 +120,15 @@ physical box has been confirmed against the entry.
   6C6 / 6J7 — same era, same factory, but combines detector, AGC and
   first-AF into one envelope. Sets that use a 6B7 typically don't need
   a separate detector valve.
+
+### Unaccounted boxes in `boxes-2.jpeg` and `boxes-3.jpeg`
+
+`boxes-2.jpeg` and `boxes-3.jpeg` are re-photographs of the same tray
+shown in `boxes-1.jpeg` (the two new files are byte-identical to each
+other). The unaccounted boxes are the same set listed below for
+`boxes-1.jpeg` — handwritten Miniwatt yellow cartons, small white
+Mullards, the Brimar carton and a few handwritten white-sticker boxes.
+No additional codes were resolvable from the new photos.
 
 ### Unaccounted boxes in `boxes-1.jpeg`
 
