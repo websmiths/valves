@@ -116,16 +116,28 @@ the data needed for a catalogue entry. Required fields:
                                 source currency here.
   sources               (list of [label, url] pairs)  Reference links
   crop_region           (object) with keys left, top, right, bottom — pixel
-                                coordinates in the SOURCE image bounding the
-                                box. The cropped region will be displayed at
-                                small size (~220 px tall) on the entry page
-                                as the only visual evidence the reviewer
-                                has. Pick a GENEROUS region: include the
-                                full box label, the brand name, and a
-                                margin of box edges around it — not just
-                                the printed code text. The reviewer must be
-                                able to visually verify the code from this
-                                crop alone.
+                                coordinates in the SOURCE image bounding
+                                the box. The cropped region is the ONLY
+                                visual evidence the reviewer sees (~220 px
+                                tall in the rendered HTML).
+
+                                Frame the WHOLE BOX, not just the printed
+                                code. Treat the crop as a portrait of one
+                                cardboard carton: include the brand name,
+                                the full code label, and visible box edges
+                                (top, bottom, sides) with a margin. As a
+                                rule of thumb, the box label should occupy
+                                roughly the centre 50-60 % of the crop —
+                                if it fills more than 80 %, you are
+                                cropping too tight.
+
+                                For multi-box photos (boxes stacked or
+                                arranged in a grid), use the full image
+                                width per crop where possible, and split
+                                evenly along the box boundaries. Brief
+                                overlap onto a neighbour's edge is fine
+                                and preferable to a tight zoom that
+                                amputates context.
 
   Optional fields (include only when applicable; omit otherwise):
   heater_drop           (str)  For rectifiers only
@@ -302,6 +314,13 @@ markdown fencing — just the JSON."""
 
 
 def crop_image(source_path: Path, bbox: dict, out_path: Path) -> None:
+    """Crop a region from the source image and save it as JPEG.
+
+    Small crops are upscaled (Lanczos) so they render cleanly at the
+    template's ~220 px target. The threshold is conservative: anything
+    under 600 px on the longest side gets bumped to 800 px. Larger
+    crops pass through unchanged.
+    """
     from PIL import Image
     img = Image.open(source_path)
     left = int(bbox.get("left", 0))
@@ -313,7 +332,17 @@ def crop_image(source_path: Path, bbox: dict, out_path: Path) -> None:
     right = max(left + 1, min(right, img.width))
     top = max(0, min(top, img.height))
     bottom = max(top + 1, min(bottom, img.height))
-    img.crop((left, top, right, bottom)).save(out_path, "JPEG", quality=92)
+    crop = img.crop((left, top, right, bottom))
+
+    MIN_LONGEST = 600
+    TARGET = 800
+    longest = max(crop.size)
+    if longest < MIN_LONGEST:
+        scale = TARGET / longest
+        new_size = (int(crop.width * scale), int(crop.height * scale))
+        crop = crop.resize(new_size, Image.LANCZOS)
+
+    crop.save(out_path, "JPEG", quality=92)
 
 
 def build_entry_dict(
