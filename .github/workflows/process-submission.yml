@@ -70,6 +70,11 @@ jobs:
 
       - name: Scan submissions/
         id: scan
+        # list_submissions.py reads GITHUB_SHA to scope this run to only
+        # the image added in the triggering commit. Anything else in
+        # submissions/ shows up in the "stuck" field for visibility.
+        env:
+          GITHUB_SHA: ${{ github.sha }}
         run: |
           python3 scripts/list_submissions.py > /tmp/submissions.json
           cat /tmp/submissions.json
@@ -81,6 +86,13 @@ jobs:
           echo "submissions<<EOF" >> "$GITHUB_OUTPUT"
           jq -c .submissions /tmp/submissions.json >> "$GITHUB_OUTPUT"
           echo "EOF" >> "$GITHUB_OUTPUT"
+          # Loud warning if previous failed runs left files behind.
+          stuck_count=$(jq '.stuck | length' /tmp/submissions.json)
+          if [ "$stuck_count" -gt 0 ]; then
+            echo "::warning::$stuck_count file(s) stuck in src-images/submissions/ from prior failed runs:"
+            jq -r '.stuck[]' /tmp/submissions.json | while read f; do echo "::warning::  - $f"; done
+            echo "::warning::These are NOT being processed by this run. Inspect and delete via the GitHub UI, or push a no-op rewrite of the image file to retry it."
+          fi
 
       - name: Exit early if no submissions
         if: steps.scan.outputs.count == '0'
