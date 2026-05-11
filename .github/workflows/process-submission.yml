@@ -3,8 +3,16 @@ name: Process valve submission
 on:
   push:
     branches: [main]
+    # Only fire on image commits. The Worker creates two commits per
+    # submission (image, then note) — without this filter, both fire the
+    # workflow and we pay for the cataloguing twice. The note file is
+    # still picked up by list_submissions.py, which scans the directory
+    # at run time.
     paths:
-      - "src-images/submissions/**"
+      - "src-images/submissions/*.jpg"
+      - "src-images/submissions/*.jpeg"
+      - "src-images/submissions/*.png"
+      - "src-images/submissions/*.webp"
 
 # One submission processed at a time — keeps PR numbering and entry IDs
 # from racing. We don't cancel in-progress runs because they're doing
@@ -84,6 +92,7 @@ jobs:
         if: steps.scan.outputs.count != '0'
         env:
           SUBMISSIONS_JSON: ${{ steps.scan.outputs.submissions }}
+          SUBMISSION_MODEL: ${{ vars.SUBMISSION_MODEL }}
           # Defence in depth: deny Claude the workflow's own GITHUB_TOKEN.
           # Even if a malicious submitter's note convinces Claude to push
           # directly to main or call the GitHub API, the credential needed
@@ -190,10 +199,17 @@ jobs:
           # Run Claude Code headlessly. --dangerously-skip-permissions
           # auto-approves tool use, which is appropriate for a trusted CI
           # sandbox — the GITHUB_TOKEN scrub above bounds what that means.
+          # Pin the model to Sonnet 4.6 — capable enough for valve OCR
+          # and lookup, ~5× cheaper than Opus per token. Override via
+          # the SUBMISSION_MODEL repo variable if you want to experiment
+          # with Haiku (cheaper, less reliable on multi-box photos) or
+          # Opus (more expensive, marginal accuracy gain).
+          model="${SUBMISSION_MODEL:-claude-sonnet-4-6}"
           claude \
             --print \
             --dangerously-skip-permissions \
             --output-format text \
+            --model "$model" \
             < /tmp/prompt.txt
 
       - name: Read generated PR body
