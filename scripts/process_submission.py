@@ -192,7 +192,10 @@ def call_claude(image_bytes: bytes, image_media_type: str, note: str) -> dict:
         ) from e
 
     client = Anthropic()
-    model = os.environ.get("SUBMISSION_MODEL", "claude-sonnet-4-6")
+    # Fall back to default if the env var is unset OR set-but-empty (the
+    # GitHub Actions vars.SUBMISSION_MODEL → env injection produces ""
+    # when the repo variable doesn't exist).
+    model = os.environ.get("SUBMISSION_MODEL") or "claude-sonnet-4-6"
     note_block = f"<submitter_note>\n{note}\n</submitter_note>" if note else "<submitter_note>(none)</submitter_note>"
 
     user_text = f"""Please catalogue this photograph of valve boxes.
@@ -565,7 +568,8 @@ def main() -> int:
         source_image_basename = next_source_filename(extension=ext)
 
         # Call Claude
-        print(f"Calling Claude on {image_path} (model={os.environ.get('SUBMISSION_MODEL', 'claude-sonnet-4-6')})…")
+        model_name = os.environ.get("SUBMISSION_MODEL") or "claude-sonnet-4-6"
+        print(f"Calling Claude on {image_path} (model={model_name})…")
         result = call_claude(image_path.read_bytes(), media_type, note)
 
         boxes = result.get("boxes", [])
