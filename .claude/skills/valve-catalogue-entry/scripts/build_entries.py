@@ -17,6 +17,10 @@ DATA = SCRIPT_DIR.parent / "data"
 ENTRIES_JSON = DATA / "entries.json"
 REPO = SCRIPT_DIR.parents[3]
 ENTRIES = REPO / "entries"
+# Per-entry box-photo crops are tracked in the repo so the build script
+# works on a fresh checkout (CI, a friend's clone, etc.). outputs/ is
+# left as a scratch dir for the interactive workflow.
+CROPS = REPO / "src-images" / "crops"
 OUTPUTS = REPO / "outputs"
 
 
@@ -180,7 +184,7 @@ def render_sidebar(current_id: str | None, entries: list[dict]) -> str:
 
 
 def render(e: dict, all_entries: list[dict]) -> str:
-    box_b64 = b64(OUTPUTS / e["crop"])
+    box_b64 = b64(CROPS / e["crop"])
     svg = svg_for(e["svg_key"], e["code"])
     heater_drop_row = (
         f'<dt>Heater drop</dt><dd>{e["heater_drop"]}</dd>' if e.get("heater_drop") else ""

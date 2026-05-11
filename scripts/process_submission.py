@@ -44,6 +44,7 @@ SCRIPTS = REPO / "scripts"
 SRC_IMAGES = REPO / "src-images"
 SUBMISSIONS = SRC_IMAGES / "submissions"
 ENTRIES_DIR = REPO / "entries"
+CROPS = SRC_IMAGES / "crops"      # tracked in repo — see build_entries.py
 OUTPUTS = REPO / "outputs"
 SKILL = REPO / ".claude/skills/valve-catalogue-entry"
 INDEX_HTML = REPO / "index.html"
@@ -546,6 +547,7 @@ def main() -> int:
     note_text: str = ""
 
     entries = build_entries.load_entries()
+    CROPS.mkdir(parents=True, exist_ok=True)
     OUTPUTS.mkdir(exist_ok=True)
 
     for sub in listing["submissions"]:
@@ -583,7 +585,7 @@ def main() -> int:
             crop_filename = f"entry-{new_id}-crop.jpeg"
             try:
                 crop_image(image_path, box.get("crop_region", {}),
-                           OUTPUTS / crop_filename)
+                           CROPS / crop_filename)
             except Exception as e:
                 print(f"crop failed for box {box.get('code')}: {e}", file=sys.stderr)
                 continue
