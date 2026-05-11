@@ -63,6 +63,13 @@ white Mullard boxes whose codes aren't legible at the photo's
 resolution. See [`outputs/boxes-1-tally.md`](outputs/boxes-1-tally.md)
 for the master sweep.
 
+`boxes-2.jpeg` and `boxes-3.jpeg` arrived via the friend-submission
+form on 2026-05-11. Both files are byte-identical to each other and
+depict the same physical tray as `boxes-1.jpeg` (same arrangement,
+same handwriting, same lighting). No new identifiable types — they
+are catalogued as additional source photos but do not change the
+entries list.
+
 ## Verification flags
 
 A running list of entries that warrant a physical check, and other things
