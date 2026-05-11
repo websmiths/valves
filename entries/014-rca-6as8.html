@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Valve Catalogue — RCA 6AS8</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --bg: #fafaf7;
+    --ink: #1d1d1b;
+    --muted: #6b6b66;
+    --line: #d9d4c7;
+    --accent: #8a1c1c;
+    --accent-soft: #f3e7e7;
+    --card: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 32px 24px 64px;
+    font-family: "Helvetica Neue", "Inter", system-ui, sans-serif;
+    background: var(--bg); color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+  .sheet {
+    max-width: 920px; margin: 0 auto;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.02), 0 6px 24px rgba(40,30,10,0.06);
+    overflow: hidden;
+  }
+  header {
+    padding: 24px 32px 18px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap;
+  }
+  header .eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  header h1 {
+    margin: 0; font-size: 36px; font-weight: 700; letter-spacing: -0.01em;
+  }
+  header h1 .code { color: var(--accent); }
+  header .tag {
+    display: inline-block; padding: 3px 10px; border-radius: 999px;
+    background: var(--accent-soft); color: var(--accent);
+    font-size: 12px; font-weight: 600; letter-spacing: 0.04em;
+  }
+  header .id {
+    margin-left: auto; font-size: 12px; color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .lede {
+    padding: 12px 32px 22px; color: var(--muted);
+    border-bottom: 1px solid var(--line);
+    font-size: 15px; line-height: 1.55;
+  }
+  .imgs {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .imgs figure {
+    margin: 0; padding: 20px 24px; text-align: center;
+    border-right: 1px solid var(--line);
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+  }
+  .imgs figure:last-child { border-right: 0; }
+  .imgs img, .imgs svg {
+    max-width: 100%; height: 220px; width: auto;
+    border-radius: 4px;
+  }
+  .imgs figcaption {
+    font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .grid {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+  }
+  section {
+    padding: 20px 32px;
+    border-bottom: 1px solid var(--line);
+  }
+  section.col { border-right: 1px solid var(--line); }
+  section.col:nth-child(2n) { border-right: 0; }
+  section h2 {
+    margin: 0 0 12px; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
+  }
+  dl {
+    margin: 0; display: grid;
+    grid-template-columns: 38% 62%;
+    row-gap: 6px; column-gap: 12px;
+    font-size: 14px; line-height: 1.45;
+  }
+  dt { color: var(--muted); font-weight: 500; }
+  dd { margin: 0; color: var(--ink); }
+  dd strong { color: var(--accent); }
+  .prose { font-size: 14px; line-height: 1.6; }
+  .prose p { margin: 0 0 10px; }
+  .pillrow { display: flex; flex-wrap: wrap; gap: 6px; }
+  .pill {
+    display: inline-block; padding: 4px 10px;
+    background: #f1efe8; border: 1px solid var(--line);
+    border-radius: 999px; font-size: 12px; color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .pill.same { background: #eef5ee; border-color: #c8dfc8; color: #1f4a1f; }
+  .pill.alt  { background: #fff6e1; border-color: #ecd99a; color: #6a4a08; }
+  .value-row {
+    display: flex; align-items: baseline; gap: 14px;
+    font-variant-numeric: tabular-nums;
+  }
+  .value-row .big { font-size: 22px; font-weight: 700; }
+  .value-row .note { font-size: 12px; color: var(--muted); }
+  footer {
+    padding: 18px 32px 22px;
+    font-size: 12px; color: var(--muted); line-height: 1.55;
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+  .conf {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px; border-radius: 999px;
+    font-size: 12px; font-weight: 600;
+  }
+  .conf.high   { background: #eef5ee; color: #1f4a1f; }
+  .conf.medium { background: #fff6e1; color: #6a4a08; }
+  .conf.low    { background: #fdecec; color: #7a1c1c; }
+  .conf .dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; opacity: 0.7; }
+  @media (max-width: 720px) {
+    .imgs { grid-template-columns: 1fr; }
+    .imgs figure { border-right: 0; border-bottom: 1px solid var(--line); }
+    .grid { grid-template-columns: 1fr; }
+    section.col { border-right: 0; }
+    dl { grid-template-columns: 40% 60%; }
+  }
+
+.page {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 28px;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: start;
+}
+.sidebar {
+  position: sticky; top: 24px;
+  font-size: 13px; line-height: 1.4;
+}
+.sidebar .nav-home {
+  display: inline-block; padding: 4px 0;
+  font-size: 12px; letter-spacing: 0.04em;
+  color: var(--muted); text-decoration: none;
+  margin-bottom: 14px;
+}
+.sidebar .nav-home:hover { color: var(--accent); }
+.sidebar .group { margin-bottom: 16px; }
+.sidebar .group h3 {
+  font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--muted); margin: 0 0 6px; font-weight: 700;
+}
+.sidebar ul { list-style: none; padding: 0; margin: 0; }
+.sidebar a.entry-link {
+  display: flex; gap: 8px; align-items: baseline;
+  padding: 4px 10px; border-radius: 4px;
+  text-decoration: none; color: var(--ink);
+  font-size: 13px;
+}
+.sidebar a.entry-link:hover { background: #f1efe8; }
+.sidebar a.entry-link.current {
+  background: var(--accent-soft); color: var(--accent);
+}
+.sidebar a.entry-link .code {
+  font-weight: 700; color: var(--accent); min-width: 52px;
+  font-variant-numeric: tabular-nums;
+}
+.sidebar a.entry-link .brand {
+  color: var(--muted); font-size: 11px;
+}
+.sidebar a.entry-link.current .brand { color: var(--accent); opacity: 0.85; }
+
+main { min-width: 0; }
+main .back-link {
+  display: inline-block; margin-bottom: 8px;
+  font-size: 12px; color: var(--muted); text-decoration: none;
+}
+main .back-link:hover { color: var(--accent); }
+
+@media (max-width: 960px) {
+  body { padding: 24px 16px 48px; }
+  .page { grid-template-columns: 1fr; gap: 16px; }
+  .sidebar { position: static; }
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+<aside class="sidebar">
+<a href="../index.html" class="nav-home">← Catalogue index</a>
+<div class="group"><h3>Rectifiers</h3><ul>
+<li><a class="entry-link" href="001-rca-5z3.html"><span class="code">5Z3</span><span class="brand">RCA</span></a></li>
+<li><a class="entry-link" href="002-radiotron-80.html"><span class="code">80</span><span class="brand">Radiotron</span></a></li>
+<li><a class="entry-link" href="006-radiotron-6x5gt.html"><span class="code">6X5GT</span><span class="brand">Radiotron</span></a></li>
+</ul></div>
+<div class="group"><h3>RF / IF pentodes</h3><ul>
+<li><a class="entry-link" href="003-radiotron-78.html"><span class="code">78</span><span class="brand">Radiotron</span></a></li>
+<li><a class="entry-link" href="004-radiotron-6d6.html"><span class="code">6D6</span><span class="brand">Super Radiotron</span></a></li>
+<li><a class="entry-link" href="005-radiotron-6c6.html"><span class="code">6C6</span><span class="brand">Radiotron</span></a></li>
+<li><a class="entry-link" href="008-radiotron-6b7s.html"><span class="code">6B7S</span><span class="brand">Radiotron</span></a></li>
+<li><a class="entry-link" href="009-radiotron-6j7.html"><span class="code">6J7</span><span class="brand">Super Radiotron</span></a></li>
+<li><a class="entry-link current" href="014-rca-6as8.html"><span class="code">6AS8</span><span class="brand">RCA</span></a></li>
+</ul></div>
+<div class="group"><h3>Frequency converters</h3><ul>
+<li><a class="entry-link" href="010-radiotron-6j8g.html"><span class="code">6J8G</span><span class="brand">Super Radiotron</span></a></li>
+</ul></div>
+<div class="group"><h3>Output valves</h3><ul>
+<li><a class="entry-link" href="007-gec-kt66.html"><span class="code">KT66</span><span class="brand">G.E.C.</span></a></li>
+<li><a class="entry-link" href="011-rca-6db5.html"><span class="code">6DB5</span><span class="brand">RCA</span></a></li>
+<li><a class="entry-link" href="013-rca-6cu5.html"><span class="code">6CU5</span><span class="brand">RCA</span></a></li>
+</ul></div>
+<div class="group"><h3>Other / TBD</h3><ul>
+<li><a class="entry-link" href="012-rca-5bk7b.html"><span class="code">5BK7B</span><span class="brand">RCA</span></a></li>
+</ul></div>
+</aside>
+
+<main>
+<a href="../index.html" class="back-link">← All entries</a>
+
+<div class="sheet">
+
+  <header>
+    <span class="tag">Diode / sharp-cutoff RF pentode</span>
+    <div>
+      <div class="eyebrow">Valve Catalogue · Entry</div>
+      <h1>RCA <span class="code">6AS8</span></h1>
+    </div>
+    <span class="id">Entry #014 · Source: boxes-2.jpg</span>
+  </header>
+
+  <p class="lede">
+    The <strong>6AS8</strong> is a miniature noval single-diode / sharp-cutoff pentode combination tube used in AM/FM radio and television intermediate-frequency circuits. The diode section serves as a detector or AVC rectifier while the sharp-cutoff pentode provides IF amplification, combining two functions in one 9-pin envelope.
+  </p>
+
+  <div class="imgs">
+    <figure>
+      <img src="data:image/jpeg;base64,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" alt="Photograph of the RCA 6AS8 valve box, cropped from the catalogue source image.">
+      <figcaption>Source photo · cropped from boxes-2.jpg</figcaption>
+    </figure>
+    <figure>
+      <svg viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg" aria-label="Miniature 9-pin (B9A / Noval) valve.">
+  <defs>
+    <linearGradient id="glass4" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#dfe6ec"/>
+      <stop offset="0.5" stop-color="#f6f9fc"/>
+      <stop offset="1" stop-color="#b8c2cb"/>
+    </linearGradient>
+  </defs>
+  <path d="M72,38 Q72,28 100,28 Q128,28 128,38 L128,212 Q128,222 100,222 Q72,222 72,212 Z" fill="url(#glass4)" stroke="#3a3a3a" stroke-width="1.3"/>
+  <rect x="86" y="68" width="28" height="115" fill="#3b3b3b" stroke="#222" stroke-width="0.8"/>
+  <path d="M91,183 Q100,205 109,183" fill="none" stroke="#c84a14" stroke-width="1.3"/>
+  <!-- 9 pins -->
+  <g fill="#b9a37a" stroke="#6a5b3e">
+    <rect x="74" y="220" width="3" height="28" rx="1"/>
+    <rect x="81" y="222" width="3" height="26" rx="1"/>
+    <rect x="88" y="223" width="3" height="25" rx="1"/>
+    <rect x="95" y="224" width="3" height="24" rx="1"/>
+    <rect x="102" y="224" width="3" height="24" rx="1"/>
+    <rect x="109" y="223" width="3" height="25" rx="1"/>
+    <rect x="116" y="222" width="3" height="26" rx="1"/>
+    <rect x="123" y="220" width="3" height="28" rx="1"/>
+    <rect x="98.5" y="226" width="3" height="22" rx="1"/>
+  </g>
+  <text x="100" y="135" text-anchor="middle" font-family="Helvetica, sans-serif" font-size="11" fill="#e7d6a8" letter-spacing="1.5">6AS8</text>
+</svg>
+
+      <figcaption>Reference · Miniature glass (T-6½) envelope, Noval B9A base</figcaption>
+    </figure>
+  </div>
+
+  <div class="grid">
+    <section class="col">
+      <h2>Identification</h2>
+      <dl>
+        <dt>Code</dt><dd><strong>6AS8</strong></dd>
+        <dt>Brand on box</dt><dd>RCA</dd>
+        <dt>Country of origin</dt><dd>USA (RCA)</dd>
+        <dt>First introduced</dt><dd>c. 1955</dd>
+        <dt>Era</dt><dd>mid-1950s – mid-1960s</dd>
+        <dt>Confidence</dt><dd><span class="conf high"><span class="dot"></span>High · printed factory label; bottom label partially shadowed but code confirmed as 6AS8</span></dd>
+        
+      </dl>
+    </section>
+
+    <section class="col">
+      <h2>Type &amp; construction</h2>
+      <dl>
+        <dt>Function</dt><dd><strong>Single diode + sharp-cutoff RF/IF pentode</strong></dd>
+        <dt>Envelope</dt><dd>T-6½ glass miniature, ~19 × 58 mm</dd>
+        <dt>Base</dt><dd>9-pin miniature noval (B9A), no locating key</dd>
+        <dt>Heating</dt><dd>Indirectly heated cathode, 6.3 V, 0.45 A</dd>
+        
+      </dl>
+    </section>
+
+    <section class="col">
+      <h2>Key ratings</h2>
+      <dl>
+        <dt>Max plate voltage (pentode)</dt><dd>150 V</dd>
+        <dt>Diode peak inverse voltage</dt><dd>330 V</dd>
+        <dt>Application</dt><dd>Combined IF amplifier and detector/AVC stage in AM/FM radio and television receivers.</dd>
+        
+        
+      </dl>
+    </section>
+
+    <section class="col">
+      <h2>Typical applications</h2>
+      <div class="prose">
+        <p>The 6AS8 was used in the intermediate-frequency strip of AM/FM radios and television sets, where its pentode section amplified the IF signal and its built-in diode provided signal detection and/or automatic volume control (AVC) rectification. Combining both functions in one envelope reduced component count and simplified circuit layout in compact receiver designs of the late 1950s.</p>
+      </div>
+    </section>
+
+    <section class="col">
+      <h2>Equivalents &amp; substitutes</h2>
+      <div class="prose">
+        <p>No widely-listed equivalents.</p>
+      </div>
+    </section>
+
+    <section class="col">
+      <h2>Approximate market value</h2>
+      <div class="value-row">
+        <div class="big">A$8 – A$20</div>
+        <div class="note">NOS, boxed, single tube</div>
+      </div>
+      <div class="prose" style="margin-top:10px;">
+        <p>The 6AS8 is a common consumer-grade IF/detector tube with modest collector interest; NOS RCA examples typically sell at the lower end of the vintage miniature tube price range, with original-box examples commanding a small premium.</p>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <strong>Sources:</strong>
+    <a href="https://www.rfparts.com/6as8.html">RF Parts – 6AS8 listing</a> ·
+    <a href="https://www.alldatasheet.com/datasheet-pdf/pdf/229319/ETC2/6AS8.html">Alldatasheet – 6AS8 datasheet entry</a> ·
+    <a href="http://electrontubestore.com/index.php?main_page=product_info&products_id=1689&language=en">ElectronTubeStore – 6AS8 specs</a> ·
+    <a href="https://frank.pocnet.net/sheets/049/6/6AS8.pdf">Frank's Electron Tube Data Sheets – 6AS8 PDF</a>
+    <br><br>
+    <em>Catalogue entry · generated from boxes-2.jpg.</em>
+  </footer>
+
+</div>
+
+</main>
+
+</div>
+
+</body>
+</html>

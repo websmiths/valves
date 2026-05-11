@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Valve Catalogue — RCA 6CU5</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --bg: #fafaf7;
+    --ink: #1d1d1b;
+    --muted: #6b6b66;
+    --line: #d9d4c7;
+    --accent: #8a1c1c;
+    --accent-soft: #f3e7e7;
+    --card: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 32px 24px 64px;
+    font-family: "Helvetica Neue", "Inter", system-ui, sans-serif;
+    background: var(--bg); color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+  .sheet {
+    max-width: 920px; margin: 0 auto;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.02), 0 6px 24px rgba(40,30,10,0.06);
+    overflow: hidden;
+  }
+  header {
+    padding: 24px 32px 18px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap;
+  }
+  header .eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  header h1 {
+    margin: 0; font-size: 36px; font-weight: 700; letter-spacing: -0.01em;
+  }
+  header h1 .code { color: var(--accent); }
+  header .tag {
+    display: inline-block; padding: 3px 10px; border-radius: 999px;
+    background: var(--accent-soft); color: var(--accent);
+    font-size: 12px; font-weight: 600; letter-spacing: 0.04em;
+  }
+  header .id {
+    margin-left: auto; font-size: 12px; color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .lede {
+    padding: 12px 32px 22px; color: var(--muted);
+    border-bottom: 1px solid var(--line);
+    font-size: 15px; line-height: 1.55;
+  }
+  .imgs {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .imgs figure {
+    margin: 0; padding: 20px 24px; text-align: center;
+    border-right: 1px solid var(--line);
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+  }
+  .imgs figure:last-child { border-right: 0; }
+  .imgs img, .imgs svg {
+    max-width: 100%; height: 220px; width: auto;
+    border-radius: 4px;
+  }
+  .imgs figcaption {
+    font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .grid {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+  }
+  section {
+    padding: 20px 32px;
+    border-bottom: 1px solid var(--line);
+  }
+  section.col { border-right: 1px solid var(--line); }
+  section.col:nth-child(2n) { border-right: 0; }
+  section h2 {
+    margin: 0 0 12px; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
+  }
+  dl {
+    margin: 0; display: grid;
+    grid-template-columns: 38% 62%;
+    row-gap: 6px; column-gap: 12px;
+    font-size: 14px; line-height: 1.45;
+  }
+  dt { color: var(--muted); font-weight: 500; }
+  dd { margin: 0; color: var(--ink); }
+  dd strong { color: var(--accent); }
+  .prose { font-size: 14px; line-height: 1.6; }
+  .prose p { margin: 0 0 10px; }
+  .pillrow { display: flex; flex-wrap: wrap; gap: 6px; }
+  .pill {
+    display: inline-block; padding: 4px 10px;
+    background: #f1efe8; border: 1px solid var(--line);
+    border-radius: 999px; font-size: 12px; color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .pill.same { background: #eef5ee; border-color: #c8dfc8; color: #1f4a1f; }
+  .pill.alt  { background: #fff6e1; border-color: #ecd99a; color: #6a4a08; }
+  .value-row {
+    display: flex; align-items: baseline; gap: 14px;
+    font-variant-numeric: tabular-nums;
+  }
+  .value-row .big { font-size: 22px; font-weight: 700; }
+  .value-row .note { font-size: 12px; color: var(--muted); }
+  footer {
+    padding: 18px 32px 22px;
+    font-size: 12px; color: var(--muted); line-height: 1.55;
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+  .conf {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px; border-radius: 999px;
+    font-size: 12px; font-weight: 600;
+  }
+  .conf.high   { background: #eef5ee; color: #1f4a1f; }
+  .conf.medium { background: #fff6e1; color: #6a4a08; }
+  .conf.low    { background: #fdecec; color: #7a1c1c; }
+  .conf .dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; opacity: 0.7; }
+  @media (max-width: 720px) {
+    .imgs { grid-template-columns: 1fr; }
+    .imgs figure { border-right: 0; border-bottom: 1px solid var(--line); }
+    .grid { grid-template-columns: 1fr; }
+    section.col { border-right: 0; }
+    dl { grid-template-columns: 40% 60%; }
+  }
+
+.page {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 28px;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: start;
+}
+.sidebar {
+  position: sticky; top: 24px;
+  font-size: 13px; line-height: 1.4;
+}
+.sidebar .nav-home {
+  display: inline-block; padding: 4px 0;
+  font-size: 12px; letter-spacing: 0.04em;
+  color: var(--muted); text-decoration: none;
+  margin-bottom: 14px;
+}
+.sidebar .nav-home:hover { color: var(--accent); }
+.sidebar .group { margin-bottom: 16px; }
+.sidebar .group h3 {
+  font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--muted); margin: 0 0 6px; font-weight: 700;
+}
+.sidebar ul { list-style: none; padding: 0; margin: 0; }
+.sidebar a.entry-link {
+  display: flex; gap: 8px; align-items: baseline;
+  padding: 4px 10px; border-radius: 4px;
+  text-decoration: none; color: var(--ink);
+  font-size: 13px;
+}
+.sidebar a.entry-link:hover { background: #f1efe8; }
+.sidebar a.entry-link.current {
+  background: var(--accent-soft); color: var(--accent);
+}
+.sidebar a.entry-link .code {
+  font-weight: 700; color: var(--accent); min-width: 52px;
+  font-variant-numeric: tabular-nums;
+}
+.sidebar a.entry-link .brand {
+  color: var(--muted); font-size: 11px;
+}
+.sidebar a.entry-link.current .brand { color: var(--accent); opacity: 0.85; }
+
+main { min-width: 0; }
+main .back-link {
+  display: inline-block; margin-bottom: 8px;
+  font-size: 12px; color: var(--muted); text-decoration: none;
+}
+main .back-link:hover { color: var(--accent); }
+
+@media (max-width: 960px) {
+  body { padding: 24px 16px 48px; }
+  .page { grid-template-columns: 1fr; gap: 16px; }
+  .sidebar { position: static; }
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+<aside class="sidebar">
+<a href="../index.html" class="nav-home">← Catalogue index</a>
+<div class="group"><h3>Rectifiers</h3><ul>
+<li><a class="entry-link" href="001-rca-5z3.html"><span class="code">5Z3</span><span class="brand">RCA</span></a></li>
+<li><a class="entry-link" href="002-radiotron-80.html"><span class="code">80</span><span class="brand">Radiotron</span></a></li>
+<li><a class="entry-link" href="006-radiotron-6x5gt.html"><span class="code">6X5GT</span><span class="brand">Radiotron</span></a></li>
+</ul></div>
+<div class="group"><h3>RF / IF pentodes</h3><ul>
+<li><a class="entry-link" href="003-radiotron-78.html"><span class="code">78</span><span class="brand">Radiotron</span></a></li>
+<li><a class="entry-link" href="004-radiotron-6d6.html"><span class="code">6D6</span><span class="brand">Super Radiotron</span></a></li>
+<li><a class="entry-link" href="005-radiotron-6c6.html"><span class="code">6C6</span><span class="brand">Radiotron</span></a></li>
+<li><a class="entry-link" href="008-radiotron-6b7s.html"><span class="code">6B7S</span><span class="brand">Radiotron</span></a></li>
+<li><a class="entry-link" href="009-radiotron-6j7.html"><span class="code">6J7</span><span class="brand">Super Radiotron</span></a></li>
+<li><a class="entry-link" href="014-rca-6as8.html"><span class="code">6AS8</span><span class="brand">RCA</span></a></li>
+</ul></div>
+<div class="group"><h3>Frequency converters</h3><ul>
+<li><a class="entry-link" href="010-radiotron-6j8g.html"><span class="code">6J8G</span><span class="brand">Super Radiotron</span></a></li>
+</ul></div>
+<div class="group"><h3>Output valves</h3><ul>
+<li><a class="entry-link" href="007-gec-kt66.html"><span class="code">KT66</span><span class="brand">G.E.C.</span></a></li>
+<li><a class="entry-link" href="011-rca-6db5.html"><span class="code">6DB5</span><span class="brand">RCA</span></a></li>
+<li><a class="entry-link current" href="013-rca-6cu5.html"><span class="code">6CU5</span><span class="brand">RCA</span></a></li>
+</ul></div>
+<div class="group"><h3>Other / TBD</h3><ul>
+<li><a class="entry-link" href="012-rca-5bk7b.html"><span class="code">5BK7B</span><span class="brand">RCA</span></a></li>
+</ul></div>
+</aside>
+
+<main>
+<a href="../index.html" class="back-link">← All entries</a>
+
+<div class="sheet">
+
+  <header>
+    <span class="tag">Beam power tetrode</span>
+    <div>
+      <div class="eyebrow">Valve Catalogue · Entry</div>
+      <h1>RCA <span class="code">6CU5</span></h1>
+    </div>
+    <span class="id">Entry #013 · Source: boxes-2.jpg</span>
+  </header>
+
+  <p class="lede">
+    The <strong>6CU5</strong> is a 7-pin miniature beam power tube descended from the 50C5 / 50B5 family — the 6 V heater version sharing identical internal construction with the <strong>12C5</strong>, <strong>17C5</strong>, <strong>25C5</strong>, and <strong>50C5</strong>. It was used as an audio output valve in the output stage of television receivers and transformerless AC/DC radio sets.
+  </p>
+
+  <div class="imgs">
+    <figure>
+      <img src="data:image/jpeg;base64,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" alt="Photograph of the RCA 6CU5 valve box, cropped from the catalogue source image.">
+      <figcaption>Source photo · cropped from boxes-2.jpg</figcaption>
+    </figure>
+    <figure>
+      <svg viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg" aria-label="Miniature 7-pin (B7G) valve.">
+  <defs>
+    <linearGradient id="glass3" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#dfe6ec"/>
+      <stop offset="0.5" stop-color="#f6f9fc"/>
+      <stop offset="1" stop-color="#b8c2cb"/>
+    </linearGradient>
+  </defs>
+  <!-- small tubular envelope -->
+  <path d="M75,40 Q75,30 100,30 Q125,30 125,40 L125,210 Q125,220 100,220 Q75,220 75,210 Z" fill="url(#glass3)" stroke="#3a3a3a" stroke-width="1.3"/>
+  <rect x="88" y="70" width="24" height="110" fill="#3b3b3b" stroke="#222" stroke-width="0.8"/>
+  <path d="M93,180 Q100,200 107,180" fill="none" stroke="#c84a14" stroke-width="1.3"/>
+  <!-- 7 pins emerging from base of glass (no skirt — miniatures don't have one) -->
+  <g fill="#b9a37a" stroke="#6a5b3e">
+    <rect x="78" y="220" width="3" height="28" rx="1"/>
+    <rect x="86" y="222" width="3" height="26" rx="1"/>
+    <rect x="94" y="223" width="3" height="25" rx="1"/>
+    <rect x="103" y="223" width="3" height="25" rx="1"/>
+    <rect x="111" y="222" width="3" height="26" rx="1"/>
+    <rect x="119" y="220" width="3" height="28" rx="1"/>
+    <rect x="98.5" y="225" width="3" height="23" rx="1"/>
+  </g>
+  <text x="100" y="135" text-anchor="middle" font-family="Helvetica, sans-serif" font-size="11" fill="#e7d6a8" letter-spacing="1.5">6CU5</text>
+</svg>
+
+      <figcaption>Reference · Miniature glass (T-5½) envelope, B7G base</figcaption>
+    </figure>
+  </div>
+
+  <div class="grid">
+    <section class="col">
+      <h2>Identification</h2>
+      <dl>
+        <dt>Code</dt><dd><strong>6CU5</strong></dd>
+        <dt>Brand on box</dt><dd>RCA</dd>
+        <dt>Country of origin</dt><dd>USA (RCA)</dd>
+        <dt>First introduced</dt><dd>1956</dd>
+        <dt>Era</dt><dd>1956 – early 1970s</dd>
+        <dt>Confidence</dt><dd><span class="conf high"><span class="dot"></span>High · printed factory label clearly legible</span></dd>
+        
+      </dl>
+    </section>
+
+    <section class="col">
+      <h2>Type &amp; construction</h2>
+      <dl>
+        <dt>Function</dt><dd><strong>Beam power amplifier (audio output)</strong></dd>
+        <dt>Envelope</dt><dd>T-5½ glass miniature 7-pin, ~17 × 52 mm</dd>
+        <dt>Base</dt><dd>7-pin miniature (B7G), no locating key</dd>
+        <dt>Heating</dt><dd>Indirectly heated cathode, 6.3 V, 1.2 A</dd>
+        
+      </dl>
+    </section>
+
+    <section class="col">
+      <h2>Key ratings</h2>
+      <dl>
+        <dt>Max plate voltage</dt><dd>150 V</dd>
+        <dt>Max plate dissipation</dt><dd>7 W</dd>
+        <dt>Application</dt><dd>Audio output stage in television receivers and transformerless AC/DC radio sets.</dd>
+        
+        
+      </dl>
+    </section>
+
+    <section class="col">
+      <h2>Typical applications</h2>
+      <div class="prose">
+        <p>The 6CU5 was primarily employed as the audio output tube in the sound section of television receivers and compact AC/DC radios of the late 1950s and 1960s. Its 7-pin B7G base allowed compact chassis layout, and its low operating voltage made it ideal for transformerless designs with line-derived B+ of around 100–130 V.</p>
+      </div>
+    </section>
+
+    <section class="col">
+      <h2>Equivalents &amp; substitutes</h2>
+      <div class="prose">
+        <p style="margin-bottom:8px;"><strong>Direct equivalents</strong> (same electricals &amp; base):</p>
+        <div class="pillrow" style="margin-bottom:12px;"><span class="pill same">50C5</span><span class="pill same">12C5</span><span class="pill same">25C5</span><span class="pill same">17C5</span></div>
+        <p style="margin-bottom:8px;"><strong>Electrically same, different base</strong> (needs adapter / rewire):</p>
+        <div class="pillrow"><span class="pill alt">50B5</span><span class="pill alt">6DB5</span></div>
+      </div>
+    </section>
+
+    <section class="col">
+      <h2>Approximate market value</h2>
+      <div class="value-row">
+        <div class="big">A$8 – A$22</div>
+        <div class="note">NOS, boxed, single tube</div>
+      </div>
+      <div class="prose" style="margin-top:10px;">
+        <p>The 6CU5 is a very common consumer TV/radio type with broad NOS availability from multiple manufacturers; RCA examples in original boxes are priced modestly and appeal mainly to vintage radio and TV restorers.</p>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <strong>Sources:</strong>
+    <a href="https://www.radiomuseum.org/tubes/tube_6cu5.html">Radiomuseum.org – 6CU5 entry</a> ·
+    <a href="https://americanhistory.si.edu/collections/object/nmah_711865">Smithsonian NMAH – Westinghouse 6CU5 donor card</a> ·
+    <a href="https://www.rfparts.com/6cu5.html">RF Parts – 6CU5 listing</a> ·
+    <a href="https://www.diyaudio.com/community/threads/is-the-6ca5-6eh5-the-same.355113/">DIYAudio – 6CU5 lineage discussion</a>
+    <br><br>
+    <em>Catalogue entry · generated from boxes-2.jpg.</em>
+  </footer>
+
+</div>
+
+</main>
+
+</div>
+
+</body>
+</html>

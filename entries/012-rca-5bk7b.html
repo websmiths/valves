@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Valve Catalogue — RCA 5BK7B</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --bg: #fafaf7;
+    --ink: #1d1d1b;
+    --muted: #6b6b66;
+    --line: #d9d4c7;
+    --accent: #8a1c1c;
+    --accent-soft: #f3e7e7;
+    --card: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 32px 24px 64px;
+    font-family: "Helvetica Neue", "Inter", system-ui, sans-serif;
+    background: var(--bg); color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+  .sheet {
+    max-width: 920px; margin: 0 auto;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.02), 0 6px 24px rgba(40,30,10,0.06);
+    overflow: hidden;
+  }
+  header {
+    padding: 24px 32px 18px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap;
+  }
+  header .eyebrow {
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  header h1 {
+    margin: 0; font-size: 36px; font-weight: 700; letter-spacing: -0.01em;
+  }
+  header h1 .code { color: var(--accent); }
+  header .tag {
+    display: inline-block; padding: 3px 10px; border-radius: 999px;
+    background: var(--accent-soft); color: var(--accent);
+    font-size: 12px; font-weight: 600; letter-spacing: 0.04em;
+  }
+  header .id {
+    margin-left: auto; font-size: 12px; color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .lede {
+    padding: 12px 32px 22px; color: var(--muted);
+    border-bottom: 1px solid var(--line);
+    font-size: 15px; line-height: 1.55;
+  }
+  .imgs {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .imgs figure {
+    margin: 0; padding: 20px 24px; text-align: center;
+    border-right: 1px solid var(--line);
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+  }
+  .imgs figure:last-child { border-right: 0; }
+  .imgs img, .imgs svg {
+    max-width: 100%; height: 220px; width: auto;
+    border-radius: 4px;
+  }
+  .imgs figcaption {
+    font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .grid {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+  }
+  section {
+    padding: 20px 32px;
+    border-bottom: 1px solid var(--line);
+  }
+  section.col { border-right: 1px solid var(--line); }
+  section.col:nth-child(2n) { border-right: 0; }
+  section h2 {
+    margin: 0 0 12px; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
+  }
+  dl {
+    margin: 0; display: grid;
+    grid-template-columns: 38% 62%;
+    row-gap: 6px; column-gap: 12px;
+    font-size: 14px; line-height: 1.45;
+  }
+  dt { color: var(--muted); font-weight: 500; }
+  dd { margin: 0; color: var(--ink); }
+  dd strong { color: var(--accent); }
+  .prose { font-size: 14px; line-height: 1.6; }
+  .prose p { margin: 0 0 10px; }
+  .pillrow { display: flex; flex-wrap: wrap; gap: 6px; }
+  .pill {
+    display: inline-block; padding: 4px 10px;
+    background: #f1efe8; border: 1px solid var(--line);
+    border-radius: 999px; font-size: 12px; color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .pill.same { background: #eef5ee; border-color: #c8dfc8; color: #1f4a1f; }
+  .pill.alt  { background: #fff6e1; border-color: #ecd99a; color: #6a4a08; }
+  .value-row {
+    display: flex; align-items: baseline; gap: 14px;
+    font-variant-numeric: tabular-nums;
+  }
+  .value-row .big { font-size: 22px; font-weight: 700; }
+  .value-row .note { font-size: 12px; color: var(--muted); }
+  footer {
+    padding: 18px 32px 22px;
+    font-size: 12px; color: var(--muted); line-height: 1.55;
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+  .conf {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px; border-radius: 999px;
+    font-size: 12px; font-weight: 600;
+  }
+  .conf.high   { background: #eef5ee; color: #1f4a1f; }
+  .conf.medium { background: #fff6e1; color: #6a4a08; }
+  .conf.low    { background: #fdecec; color: #7a1c1c; }
+  .conf .dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; opacity: 0.7; }
+  @media (max-width: 720px) {
+    .imgs { grid-template-columns: 1fr; }
+    .imgs figure { border-right: 0; border-bottom: 1px solid var(--line); }
+    .grid { grid-template-columns: 1fr; }
+    section.col { border-right: 0; }
+    dl { grid-template-columns: 40% 60%; }
+  }
+
+.page {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 28px;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: start;
+}
+.sidebar {
+  position: sticky; top: 24px;
+  font-size: 13px; line-height: 1.4;
+}
+.sidebar .nav-home {
+  display: inline-block; padding: 4px 0;
+  font-size: 12px; letter-spacing: 0.04em;
+  color: var(--muted); text-decoration: none;
+  margin-bottom: 14px;
+}
+.sidebar .nav-home:hover { color: var(--accent); }
+.sidebar .group { margin-bottom: 16px; }
+.sidebar .group h3 {
+  font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--muted); margin: 0 0 6px; font-weight: 700;
+}
+.sidebar ul { list-style: none; padding: 0; margin: 0; }
+.sidebar a.entry-link {
+  display: flex; gap: 8px; align-items: baseline;
+  padding: 4px 10px; border-radius: 4px;
+  text-decoration: none; color: var(--ink);
+  font-size: 13px;
+}
+.sidebar a.entry-link:hover { background: #f1efe8; }
+.sidebar a.entry-link.current {
+  background: var(--accent-soft); color: var(--accent);
+}
+.sidebar a.entry-link .code {
+  font-weight: 700; color: var(--accent); min-width: 52px;
+  font-variant-numeric: tabular-nums;
+}
+.sidebar a.entry-link .brand {
+  color: var(--muted); font-size: 11px;
+}
+.sidebar a.entry-link.current .brand { color: var(--accent); opacity: 0.85; }
+
+main { min-width: 0; }
+main .back-link {
+  display: inline-block; margin-bottom: 8px;
+  font-size: 12px; color: var(--muted); text-decoration: none;
+}
+main .back-link:hover { color: var(--accent); }
+
+@media (max-width: 960px) {
+  body { padding: 24px 16px 48px; }
+  .page { grid-template-columns: 1fr; gap: 16px; }
+  .sidebar { position: static; }
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+<aside class="sidebar">
+<a href="../index.html" class="nav-home">← Catalogue index</a>
+<div class="group"><h3>Rectifiers</h3><ul>
+<li><a class="entry-link" href="001-rca-5z3.html"><span class="code">5Z3</span><span class="brand">RCA</span></a></li>
+<li><a class="entry-link" href="002-radiotron-80.html"><span class="code">80</span><span class="brand">Radiotron</span></a></li>
+<li><a class="entry-link" href="006-radiotron-6x5gt.html"><span class="code">6X5GT</span><span class="brand">Radiotron</span></a></li>
+</ul></div>
+<div class="group"><h3>RF / IF pentodes</h3><ul>
+<li><a class="entry-link" href="003-radiotron-78.html"><span class="code">78</span><span class="brand">Radiotron</span></a></li>
+<li><a class="entry-link" href="004-radiotron-6d6.html"><span class="code">6D6</span><span class="brand">Super Radiotron</span></a></li>
+<li><a class="entry-link" href="005-radiotron-6c6.html"><span class="code">6C6</span><span class="brand">Radiotron</span></a></li>
+<li><a class="entry-link" href="008-radiotron-6b7s.html"><span class="code">6B7S</span><span class="brand">Radiotron</span></a></li>
+<li><a class="entry-link" href="009-radiotron-6j7.html"><span class="code">6J7</span><span class="brand">Super Radiotron</span></a></li>
+<li><a class="entry-link" href="014-rca-6as8.html"><span class="code">6AS8</span><span class="brand">RCA</span></a></li>
+</ul></div>
+<div class="group"><h3>Frequency converters</h3><ul>
+<li><a class="entry-link" href="010-radiotron-6j8g.html"><span class="code">6J8G</span><span class="brand">Super Radiotron</span></a></li>
+</ul></div>
+<div class="group"><h3>Output valves</h3><ul>
+<li><a class="entry-link" href="007-gec-kt66.html"><span class="code">KT66</span><span class="brand">G.E.C.</span></a></li>
+<li><a class="entry-link" href="011-rca-6db5.html"><span class="code">6DB5</span><span class="brand">RCA</span></a></li>
+<li><a class="entry-link" href="013-rca-6cu5.html"><span class="code">6CU5</span><span class="brand">RCA</span></a></li>
+</ul></div>
+<div class="group"><h3>Other / TBD</h3><ul>
+<li><a class="entry-link current" href="012-rca-5bk7b.html"><span class="code">5BK7B</span><span class="brand">RCA</span></a></li>
+</ul></div>
+</aside>
+
+<main>
+<a href="../index.html" class="back-link">← All entries</a>
+
+<div class="sheet">
+
+  <header>
+    <span class="tag">Medium-mu dual triode</span>
+    <div>
+      <div class="eyebrow">Valve Catalogue · Entry</div>
+      <h1>RCA <span class="code">5BK7B</span></h1>
+    </div>
+    <span class="id">Entry #012 · Source: boxes-2.jpg</span>
+  </header>
+
+  <p class="lede">
+    The <strong>5BK7B</strong> (and its close relatives <strong>5BK7</strong> and <strong>5BK7A</strong>) is a miniature medium-mu twin triode with a 4.7 V heater designed for use as a combined oscillator and mixer (frequency converter) stage in television receivers. The 'B' suffix denotes a later revision with tightened electrical specifications.
+  </p>
+
+  <div class="imgs">
+    <figure>
+      <img src="data:image/jpeg;base64,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" alt="Photograph of the RCA 5BK7B valve box, cropped from the catalogue source image.">
+      <figcaption>Source photo · cropped from boxes-2.jpg</figcaption>
+    </figure>
+    <figure>
+      <svg viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg" aria-label="Miniature 9-pin (B9A / Noval) valve.">
+  <defs>
+    <linearGradient id="glass4" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#dfe6ec"/>
+      <stop offset="0.5" stop-color="#f6f9fc"/>
+      <stop offset="1" stop-color="#b8c2cb"/>
+    </linearGradient>
+  </defs>
+  <path d="M72,38 Q72,28 100,28 Q128,28 128,38 L128,212 Q128,222 100,222 Q72,222 72,212 Z" fill="url(#glass4)" stroke="#3a3a3a" stroke-width="1.3"/>
+  <rect x="86" y="68" width="28" height="115" fill="#3b3b3b" stroke="#222" stroke-width="0.8"/>
+  <path d="M91,183 Q100,205 109,183" fill="none" stroke="#c84a14" stroke-width="1.3"/>
+  <!-- 9 pins -->
+  <g fill="#b9a37a" stroke="#6a5b3e">
+    <rect x="74" y="220" width="3" height="28" rx="1"/>
+    <rect x="81" y="222" width="3" height="26" rx="1"/>
+    <rect x="88" y="223" width="3" height="25" rx="1"/>
+    <rect x="95" y="224" width="3" height="24" rx="1"/>
+    <rect x="102" y="224" width="3" height="24" rx="1"/>
+    <rect x="109" y="223" width="3" height="25" rx="1"/>
+    <rect x="116" y="222" width="3" height="26" rx="1"/>
+    <rect x="123" y="220" width="3" height="28" rx="1"/>
+    <rect x="98.5" y="226" width="3" height="22" rx="1"/>
+  </g>
+  <text x="100" y="135" text-anchor="middle" font-family="Helvetica, sans-serif" font-size="11" fill="#e7d6a8" letter-spacing="1.5">5BK7B</text>
+</svg>
+
+      <figcaption>Reference · Miniature glass (T-6½) envelope, Noval B9A base</figcaption>
+    </figure>
+  </div>
+
+  <div class="grid">
+    <section class="col">
+      <h2>Identification</h2>
+      <dl>
+        <dt>Code</dt><dd><strong>5BK7B</strong></dd>
+        <dt>Brand on box</dt><dd>RCA</dd>
+        <dt>Country of origin</dt><dd>USA (RCA)</dd>
+        <dt>First introduced</dt><dd>c. 1952</dd>
+        <dt>Era</dt><dd>early 1950s – mid-1960s</dd>
+        <dt>Confidence</dt><dd><span class="conf high"><span class="dot"></span>High · printed factory label; final character 'B' clearly resolved</span></dd>
+        
+      </dl>
+    </section>
+
+    <section class="col">
+      <h2>Type &amp; construction</h2>
+      <dl>
+        <dt>Function</dt><dd><strong>Medium-mu twin triode, oscillator/mixer</strong></dd>
+        <dt>Envelope</dt><dd>T-6½ glass miniature, ~19 × 58 mm</dd>
+        <dt>Base</dt><dd>9-pin miniature noval (B9A), no locating key</dd>
+        <dt>Heating</dt><dd>Indirectly heated cathode, 4.7 V, 0.6 A</dd>
+        
+      </dl>
+    </section>
+
+    <section class="col">
+      <h2>Key ratings</h2>
+      <dl>
+        <dt>Max plate voltage</dt><dd>250 V</dd>
+        <dt>Max plate dissipation (per section)</dt><dd>2.5 W</dd>
+        <dt>Application</dt><dd>Combined oscillator and mixer stage in VHF television tuners and receivers.</dd>
+        
+        
+      </dl>
+    </section>
+
+    <section class="col">
+      <h2>Typical applications</h2>
+      <div class="prose">
+        <p>The 5BK7B was used principally in the front-end tuner sections of television receivers as a local-oscillator / mixer (frequency converter) tube. Its 4.7 V heater fitted series-string heater chains common in transformerless TV sets of the era. The two triode sections could be used as a self-oscillating mixer, simplifying the tuner circuit.</p>
+      </div>
+    </section>
+
+    <section class="col">
+      <h2>Equivalents &amp; substitutes</h2>
+      <div class="prose">
+        <p style="margin-bottom:8px;"><strong>Direct equivalents</strong> (same electricals &amp; base):</p>
+        <div class="pillrow" style="margin-bottom:12px;"><span class="pill same">5BK7</span><span class="pill same">5BK7A</span></div>
+      </div>
+    </section>
+
+    <section class="col">
+      <h2>Approximate market value</h2>
+      <div class="value-row">
+        <div class="big">A$15 – A$40</div>
+        <div class="note">NOS, boxed, single tube</div>
+      </div>
+      <div class="prose" style="margin-top:10px;">
+        <p>The 5BK7B is a specialised television type with limited demand outside vintage TV restoration; RCA examples in original boxes are relatively scarce and attract modest premiums from collectors.</p>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <strong>Sources:</strong>
+    <a href="https://www.radiomuseum.org/tubes/tube_5bk7a.html">Radiomuseum.org – 5BK7A entry</a> ·
+    <a href="https://www.bangybang.com/products/vintage-dumont-5bk7a-high-frequency-twin-triode-valve-bangybang-tubes">Bangybang – 5BK7A listing with specs</a> ·
+    <a href="https://vacuumtubesinc.com/index.php/5bk7-5bk7a.html">Vacuum Tubes Inc – 5BK7/5BK7A listing</a>
+    <br><br>
+    <em>Catalogue entry · generated from boxes-2.jpg.</em>
+  </footer>
+
+</div>
+
+</main>
+
+</div>
+
+</body>
+</html>

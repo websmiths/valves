@@ -612,8 +612,14 @@ def main() -> int:
     # Persist the new entries source-of-truth
     build_entries.save_entries(entries)
 
-    # Regenerate all entry HTMLs
-    build_entries.main()
+    # Re-render every entry HTML from the up-to-date `entries` list.
+    # We don't call build_entries.main() because its module-level
+    # ENTRIES_DATA was loaded at import time and doesn't see the new
+    # additions; iterating our own list keeps sidebars current.
+    for e in entries:
+        html = build_entries.render(e, entries)
+        (build_entries.ENTRIES / e["filename"]).write_text(html)
+        print(f"rendered entries/{e['filename']}")
 
     # Regenerate index.html and README status table
     regenerate_index_html(entries)

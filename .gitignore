@@ -2,6 +2,10 @@
 outputs/
 *.b64
 
+# Python bytecode (gets created by build_entries.py / process_submission.py)
+__pycache__/
+*.pyc
+
 # OS / editor noise
 .DS_Store
 Thumbs.db
