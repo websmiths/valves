@@ -54,6 +54,10 @@ ambiguous codes, and the HTML template it writes against.
 | 008 | **6B7S** | Radiotron | Duplex-diode sharp-cutoff pentode (ST-shape) | `boxes-1.jpeg` | ≈ 2 boxes present |
 | 009 | **6J7** | Super Radiotron | Sharp-cutoff RF / IF / detector pentode (octal) (ST / GT-shape) | `boxes-1.jpeg` | 1 |
 | 010 | **6J8G** | Super Radiotron | Triode-heptode frequency converter (mixer-oscillator) (G-shape (large ST)) | `boxes-1.jpeg` | 1 |
+| 011 | **6DB5** | RCA | Beam power amplifier (vertical deflection / audio output) (Miniature glass (T-6½)) | `boxes-2.jpg` | 1 |
+| 012 | **5BK7B** | RCA | Medium-mu twin triode, oscillator/mixer (Miniature glass (T-6½)) | `boxes-2.jpg` | 1 |
+| 013 | **6CU5** | RCA | Beam power amplifier (audio output) (Miniature glass (T-5½)) | `boxes-2.jpg` | 1 |
+| 014 | **6AS8** | RCA | Single diode + sharp-cutoff RF/IF pentode (Miniature glass (T-6½)) | `boxes-2.jpg` | 1 |
 <!-- AUTOGEN_STATUS_END -->
 
 Second sweep of `boxes-1.jpeg` covers everything I could read with at
