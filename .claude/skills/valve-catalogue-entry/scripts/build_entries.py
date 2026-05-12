@@ -15,8 +15,10 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 ASSETS = SCRIPT_DIR.parent / "assets"
 DATA = SCRIPT_DIR.parent / "data"
 ENTRIES_JSON = DATA / "entries.json"
+SOURCES_JSON = DATA / "sources.json"
 REPO = SCRIPT_DIR.parents[3]
 ENTRIES = REPO / "entries"
+SOURCES = REPO / "sources"           # per-photo HTML pages live here
 # Per-entry box-photo crops are tracked in the repo so the build script
 # works on a fresh checkout (CI, a friend's clone, etc.). outputs/ is
 # left as a scratch dir for the interactive workflow.
@@ -34,6 +36,21 @@ def save_entries(entries: list[dict]) -> None:
     DATA.mkdir(parents=True, exist_ok=True)
     ENTRIES_JSON.write_text(
         json.dumps({"entries": entries}, indent=2, ensure_ascii=False) + "\n"
+    )
+
+
+def load_sources() -> list[dict]:
+    """Load the source-photos metadata (provenance notes etc)."""
+    if not SOURCES_JSON.exists():
+        return []
+    return json.loads(SOURCES_JSON.read_text())["sources"]
+
+
+def save_sources(sources: list[dict]) -> None:
+    """Persist source-photos metadata."""
+    DATA.mkdir(parents=True, exist_ok=True)
+    SOURCES_JSON.write_text(
+        json.dumps({"sources": sources}, indent=2, ensure_ascii=False) + "\n"
     )
 
 # Category order is the order they appear in the sidebar and on the index.
@@ -246,7 +263,7 @@ def render(e: dict, all_entries: list[dict]) -> str:
       <div class="eyebrow">Valve Catalogue · Entry</div>
       <h1>{e['brand']} <span class="code">{e['code']}</span></h1>
     </div>
-    <span class="id">Entry #{e['id']} · Source: {e['source']}</span>
+    <span class="id">Source: <a href="../sources/{e['source'].rsplit('.', 1)[0]}.html">{e['source']}</a></span>
   </header>
 
   <p class="lede">
@@ -350,11 +367,191 @@ def render(e: dict, all_entries: list[dict]) -> str:
 ENTRIES_DATA = load_entries()
 
 
+# Additional CSS appended to the entry-template CSS for source pages.
+# Reuses the existing .page / .sidebar / .sheet shell.
+SOURCE_PAGE_EXTRA_CSS = """
+.source-figure {
+  margin: 0; padding: 28px 32px; text-align: center;
+  border-bottom: 1px solid var(--line);
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+}
+.source-figure img {
+  max-width: 100%; max-height: 540px; width: auto;
+  border-radius: 4px;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.02), 0 4px 14px rgba(40,30,10,0.06);
+}
+.source-figure figcaption {
+  font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--muted);
+}
+.source-meta {
+  padding: 16px 32px 24px; border-bottom: 1px solid var(--line);
+}
+.source-meta dl {
+  display: grid; grid-template-columns: 140px 1fr;
+  row-gap: 6px; column-gap: 12px; margin: 0;
+  font-size: 14px; line-height: 1.45;
+}
+.source-meta dt { color: var(--muted); font-weight: 500; }
+.source-meta dd { margin: 0; color: var(--ink); }
+.source-entries { padding: 18px 32px 24px; }
+.source-entries h2 {
+  margin: 0 0 12px; font-size: 11px; font-weight: 700;
+  letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
+}
+.source-entries ul { list-style: none; padding: 0; margin: 0; }
+.source-entries li { padding: 8px 0; border-bottom: 1px solid var(--line); }
+.source-entries li:last-child { border-bottom: 0; }
+.source-entries a {
+  display: flex; gap: 12px; align-items: baseline;
+  text-decoration: none; color: var(--ink);
+}
+.source-entries a:hover .code { text-decoration: underline; }
+.source-entries .code {
+  font-weight: 700; color: var(--accent); min-width: 72px;
+}
+.source-entries .brand { color: var(--muted); font-size: 13px; min-width: 130px; }
+.source-entries .conf { font-size: 11px; }
+"""
+
+
+def render_source_page(source: dict, all_entries: list[dict]) -> str:
+    """Render one source-photo page (sources/<basename>.html)."""
+    filename = source["filename"]
+    stem = filename.rsplit(".", 1)[0]
+    note = (source.get("note") or "").strip()
+
+    # Sidebar links use a different relative root from the entry pages
+    # because source pages live at /sources/, not /entries/. Adjust the
+    # entry-link hrefs at render time.
+    sidebar = render_sidebar(current_id=None, entries=all_entries)
+    sidebar = sidebar.replace('href="../index.html"', 'href="../index.html"')
+    # The sidebar's entry-links are emitted as e.g. href="001-rca-5z3.html"
+    # — relative to /entries/. From /sources/ that needs to be ../entries/...
+    import re as _re
+    sidebar = _re.sub(
+        r'href="((?!\.\.|http|/)[^"]+\.html)"',
+        r'href="../entries/\1"',
+        sidebar,
+    )
+
+    # Entries derived from this photo (primary source OR additional source)
+    derived = [
+        e for e in all_entries
+        if e.get("source") == filename
+        or filename in (e.get("additional_sources") or [])
+    ]
+    derived.sort(key=lambda e: e["id"])
+    if derived:
+        entries_html_parts = ["<ul>"]
+        for e in derived:
+            entries_html_parts.append(
+                f'<li><a href="../entries/{e["filename"]}">'
+                f'<span class="code">{e["code"]}</span>'
+                f'<span class="brand">{e["brand"]}</span>'
+                f'<span class="conf">{e["confidence_label"]}</span>'
+                f'</a></li>'
+            )
+        entries_html_parts.append("</ul>")
+        entries_html = "\n".join(entries_html_parts)
+    else:
+        entries_html = '<p style="color:var(--muted);">No entries derived from this photo yet.</p>'
+
+    submitted_at = source.get("submitted_at")
+    submitted_at_row = (
+        f'<dt>Submitted</dt><dd>{submitted_at}</dd>'
+        if submitted_at else ""
+    )
+    note_block = (
+        f'<p class="lede">{note}</p>'
+        if note
+        else '<p class="lede" style="font-style:italic;">No provenance note recorded for this photo.</p>'
+    )
+
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Valve Catalogue — Source · {filename}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>{CSS}{SOURCE_PAGE_EXTRA_CSS}</style>
+</head>
+<body>
+
+<div class="page">
+
+<aside class="sidebar">
+{sidebar}
+</aside>
+
+<main>
+<a href="../index.html" class="back-link">← All entries</a>
+
+<div class="sheet">
+
+  <header>
+    <span class="tag">Source photo</span>
+    <div>
+      <div class="eyebrow">Valve Catalogue · Source</div>
+      <h1>{filename}</h1>
+    </div>
+    <span class="id">{len(derived)} {'entry' if len(derived) == 1 else 'entries'} derived</span>
+  </header>
+
+  {note_block}
+
+  <figure class="source-figure">
+    <img src="../src-images/{filename}" alt="Source photograph: {filename}">
+    <figcaption>Source photograph · {filename}</figcaption>
+  </figure>
+
+  <section class="source-meta">
+    <dl>
+      <dt>Filename</dt><dd><code>src-images/{filename}</code></dd>
+      <dt>Entries derived</dt><dd>{len(derived)}</dd>
+      {submitted_at_row}
+    </dl>
+  </section>
+
+  <section class="source-entries">
+    <h2>Entries from this photo</h2>
+    {entries_html}
+  </section>
+
+</div>
+
+</main>
+
+</div>
+
+</body>
+</html>
+"""
+
+
 def main() -> None:
+    # Entry pages
     for e in ENTRIES_DATA:
         html = render(e, ENTRIES_DATA)
         (ENTRIES / e["filename"]).write_text(html)
         print(f"wrote entries/{e['filename']}  ({len(html):,} bytes)")
+
+    # Source-photo pages — one per unique source referenced by entries.
+    SOURCES.mkdir(parents=True, exist_ok=True)
+    sources_meta = {s["filename"]: s for s in load_sources()}
+    referenced_sources: list[str] = []
+    seen: set[str] = set()
+    for e in ENTRIES_DATA:
+        for s in [e.get("source")] + (e.get("additional_sources") or []):
+            if s and s not in seen:
+                seen.add(s)
+                referenced_sources.append(s)
+    for s_filename in referenced_sources:
+        source = sources_meta.get(s_filename, {"filename": s_filename, "note": "", "submitted_at": None})
+        html = render_source_page(source, ENTRIES_DATA)
+        stem = s_filename.rsplit(".", 1)[0]
+        (SOURCES / f"{stem}.html").write_text(html)
+        print(f"wrote sources/{stem}.html  ({len(html):,} bytes)")
 
 
 if __name__ == "__main__":

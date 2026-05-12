@@ -1,0 +1,19 @@
+{
+  "sources": [
+    {
+      "filename": "boxes-1.jpeg",
+      "note": "Original tray of ~40 valve boxes from the curator's collection — RCA, Radiotron, Mullard, Brimar, G.E.C., Marconi.",
+      "submitted_at": null
+    },
+    {
+      "filename": "boxes-2.jpg",
+      "note": "Stack of four RCA TV-era valve boxes — test submission via the form, low-resolution photo.",
+      "submitted_at": "2026-05-11"
+    },
+    {
+      "filename": "boxes-3.jpg",
+      "note": "Miniwatt boxes — second submission via the form. (Friend's actual collection note was lost before notes-in-commit-messages was wired up.)",
+      "submitted_at": "2026-05-11"
+    }
+  ]
+}

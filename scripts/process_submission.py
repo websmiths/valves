@@ -476,28 +476,27 @@ def regenerate_index_html(all_entries: list[dict]) -> None:
         flags=re.DOTALL,
     )
 
-    # Source photos list
+    # Source photos list — each row links to its sources/X.html page
+    # (which embeds the photo + provenance note + derived entries).
     src_lines = ['<!-- AUTOGEN_SOURCES_START -->', '  <ul class="entries">']
-    # Build a brand-summary descriptor per source by scanning entries
     src_to_entries: dict[str, list[dict]] = {}
     for e in all_entries:
         for s in [e.get("source")] + (e.get("additional_sources") or []):
             if s:
                 src_to_entries.setdefault(s, []).append(e)
-    for i, s in enumerate(source_photos, start=1):
+    for s in source_photos:
         entries_in_src = src_to_entries.get(s, [])
         brands = sorted({e["brand"] for e in entries_in_src})
-        codes = sorted({e["code"] for e in entries_in_src})
         if brands:
             brands_str = ", ".join(brands[:4]) + ("…" if len(brands) > 4 else "")
             n_types = len(entries_in_src)
             desc = f"{n_types} type{'s' if n_types != 1 else ''} — {brands_str}"
         else:
             desc = ""
+        stem = s.rsplit(".", 1)[0]
         src_lines.append('    <li>')
-        src_lines.append(f'      <a href="src-images/{s}">')
-        src_lines.append(f'        <span class="num">{i:02d}</span>')
-        src_lines.append(f'        <span class="code">{s.rsplit(".",1)[0]}</span>')
+        src_lines.append(f'      <a href="sources/{stem}.html">')
+        src_lines.append(f'        <span class="code">{stem}</span>')
         src_lines.append('        <span class="brand"></span>')
         src_lines.append(f'        <span class="desc">{desc}</span>')
         src_lines.append('        <span class="arrow">›</span>')
@@ -514,7 +513,8 @@ def regenerate_index_html(all_entries: list[dict]) -> None:
         flags=re.DOTALL,
     )
 
-    # Entries section grouped by category
+    # Entries section grouped by category. Numeric IDs are hidden in the
+    # listing — they live on as filenames + internal references.
     by_cat: dict[str, list[dict]] = {c: [] for c in CATEGORIES}
     for e in all_entries:
         by_cat.setdefault(e["category"], []).append(e)
@@ -529,7 +529,6 @@ def regenerate_index_html(all_entries: list[dict]) -> None:
             desc = _short_desc(e)
             lines.append('    <li>')
             lines.append(f'      <a href="entries/{e["filename"]}">')
-            lines.append(f'        <span class="num">{e["id"]}</span>')
             lines.append(f'        <span class="code">{e["code"]}</span>')
             lines.append(f'        <span class="brand">{e["brand"]}</span>')
             lines.append(f'        <span class="desc">{desc}</span>')
@@ -789,6 +788,19 @@ def main() -> int:
             if note_path.exists():
                 note_path.unlink()
 
+        # Record the submitter's note + provenance against this source
+        # photo. sources.json maps source filename → metadata; the
+        # source-photo pages render that note as a "lede" paragraph.
+        from datetime import date
+        sources_meta = build_entries.load_sources()
+        if not any(s["filename"] == source_image_basename for s in sources_meta):
+            sources_meta.append({
+                "filename": source_image_basename,
+                "note": (note or "").strip(),
+                "submitted_at": date.today().isoformat(),
+            })
+            build_entries.save_sources(sources_meta)
+
     # Persist the new entries source-of-truth
     build_entries.save_entries(entries)
 
@@ -800,6 +812,23 @@ def main() -> int:
         html = build_entries.render(e, entries)
         (build_entries.ENTRIES / e["filename"]).write_text(html)
         print(f"rendered entries/{e['filename']}")
+
+    # Render source-photo pages
+    build_entries.SOURCES.mkdir(parents=True, exist_ok=True)
+    sources_meta = {s["filename"]: s for s in build_entries.load_sources()}
+    referenced: list[str] = []
+    seen: set[str] = set()
+    for e in entries:
+        for s in [e.get("source")] + (e.get("additional_sources") or []):
+            if s and s not in seen:
+                seen.add(s)
+                referenced.append(s)
+    for s_filename in referenced:
+        meta = sources_meta.get(s_filename, {"filename": s_filename, "note": "", "submitted_at": None})
+        html = build_entries.render_source_page(meta, entries)
+        stem = s_filename.rsplit(".", 1)[0]
+        (build_entries.SOURCES / f"{stem}.html").write_text(html)
+        print(f"rendered sources/{stem}.html")
 
     # Regenerate index.html and README status table
     regenerate_index_html(entries)
