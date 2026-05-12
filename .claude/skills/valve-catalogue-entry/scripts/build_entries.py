@@ -198,19 +198,21 @@ def render(e: dict, all_entries: list[dict]) -> str:
     sidebar = render_sidebar(e["id"], all_entries)
 
     # Inventory rows in the Identification block:
-    #   - "Inventory": total count (only shown when >1 — otherwise implicit)
+    #   - "Inventory": total count — always shown, default 1
     #   - "Also in": secondary source photos beyond the primary one
-    count_row = ""
     raw_count = e.get("count")
     try:
-        count_n = int(str(raw_count).strip())
+        count_n = int(str(raw_count).strip()) if raw_count is not None else None
     except (TypeError, ValueError):
         # Free-form legacy count strings (e.g. "≈ 5 boxes present") — show as-is
         count_n = None
-    if count_n is not None and count_n > 1:
-        count_row = f'<dt>Inventory</dt><dd><strong>{count_n}</strong> in collection</dd>'
-    elif raw_count and count_n is None:
+    if count_n is not None:
+        plural = "" if count_n == 1 else "es"
+        count_row = f'<dt>Inventory</dt><dd><strong>{count_n}</strong> box{plural} in collection</dd>'
+    elif raw_count:
         count_row = f'<dt>Inventory</dt><dd>{raw_count}</dd>'
+    else:
+        count_row = '<dt>Inventory</dt><dd><strong>1</strong> box in collection</dd>'
 
     extra_sources_row = ""
     extras = e.get("additional_sources") or []

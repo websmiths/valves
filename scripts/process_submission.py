@@ -438,13 +438,32 @@ def regenerate_index_html(all_entries: list[dict]) -> None:
     """Rewrite the AUTOGEN regions of index.html from ENTRIES_DATA."""
     src = INDEX_HTML.read_text()
 
-    # Stats: entries count + source-photo count
+    # Collect unique source photos (primary + any additional_sources)
+    source_photos: list[str] = []
+    seen_sources: set[str] = set()
+    for e in all_entries:
+        for s in [e.get("source")] + (e.get("additional_sources") or []):
+            if s and s not in seen_sources:
+                seen_sources.add(s)
+                source_photos.append(s)
+
+    # Total inventory: sum of per-entry counts (default 1 each).
+    total_boxes = 0
+    for e in all_entries:
+        try:
+            total_boxes += int(str(e.get("count") or "1").strip())
+        except ValueError:
+            # Legacy free-form count like "≈ 5 boxes present" — best-effort
+            m = re.search(r"\d+", str(e.get("count") or ""))
+            total_boxes += int(m.group(0)) if m else 1
+
+    # Stats: entries / total boxes / source photos
     entry_count = len(all_entries)
-    source_photos = {e["source"] for e in all_entries}
     stats_block = (
         '<!-- AUTOGEN_STATS_START -->\n'
         '  <div class="stats">\n'
-        f'    <div class="stat"><div class="n">{entry_count}</div><div class="l">Entries</div></div>\n'
+        f'    <div class="stat"><div class="n">{entry_count}</div><div class="l">Types</div></div>\n'
+        f'    <div class="stat"><div class="n">{total_boxes}</div><div class="l">Boxes in collection</div></div>\n'
         f'    <div class="stat"><div class="n">{len(source_photos)}</div><div class="l">Source photos</div></div>\n'
         '  </div>\n'
         '  <!-- AUTOGEN_STATS_END -->'
@@ -452,6 +471,44 @@ def regenerate_index_html(all_entries: list[dict]) -> None:
     src = re.sub(
         r"<!-- AUTOGEN_STATS_START -->.*?<!-- AUTOGEN_STATS_END -->",
         stats_block,
+        src,
+        count=1,
+        flags=re.DOTALL,
+    )
+
+    # Source photos list
+    src_lines = ['<!-- AUTOGEN_SOURCES_START -->', '  <ul class="entries">']
+    # Build a brand-summary descriptor per source by scanning entries
+    src_to_entries: dict[str, list[dict]] = {}
+    for e in all_entries:
+        for s in [e.get("source")] + (e.get("additional_sources") or []):
+            if s:
+                src_to_entries.setdefault(s, []).append(e)
+    for i, s in enumerate(source_photos, start=1):
+        entries_in_src = src_to_entries.get(s, [])
+        brands = sorted({e["brand"] for e in entries_in_src})
+        codes = sorted({e["code"] for e in entries_in_src})
+        if brands:
+            brands_str = ", ".join(brands[:4]) + ("…" if len(brands) > 4 else "")
+            n_types = len(entries_in_src)
+            desc = f"{n_types} type{'s' if n_types != 1 else ''} — {brands_str}"
+        else:
+            desc = ""
+        src_lines.append('    <li>')
+        src_lines.append(f'      <a href="src-images/{s}">')
+        src_lines.append(f'        <span class="num">{i:02d}</span>')
+        src_lines.append(f'        <span class="code">{s.rsplit(".",1)[0]}</span>')
+        src_lines.append('        <span class="brand"></span>')
+        src_lines.append(f'        <span class="desc">{desc}</span>')
+        src_lines.append('        <span class="arrow">›</span>')
+        src_lines.append('      </a>')
+        src_lines.append('    </li>')
+    src_lines.append('  </ul>')
+    src_lines.append('  <!-- AUTOGEN_SOURCES_END -->')
+    sources_block = "\n".join(src_lines)
+    src = re.sub(
+        r"<!-- AUTOGEN_SOURCES_START -->.*?<!-- AUTOGEN_SOURCES_END -->",
+        sources_block,
         src,
         count=1,
         flags=re.DOTALL,

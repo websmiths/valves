@@ -162,7 +162,17 @@ jobs:
             echo "No changes to commit — nothing for the bot to push."
             exit 0
           fi
-          git commit -m "submission: ${{ steps.scan.outputs.summary }} [bot]"
+          # Use the orchestrator's PR-body summary as the commit message
+          # body, so `git log` retains submission notes, identified
+          # boxes, confidence flags and unaccounted boxes — even though
+          # we're skipping the PR step under AUTO_PUBLISH=true.
+          if [ -s /tmp/pr-body.md ]; then
+            git commit \
+              -m "submission: ${{ steps.scan.outputs.summary }} [bot]" \
+              -m "$(cat /tmp/pr-body.md)"
+          else
+            git commit -m "submission: ${{ steps.scan.outputs.summary }} [bot]"
+          fi
           # Rebase onto current main in case another commit (e.g. the
           # Worker's separate note commit, or a manual edit) landed during
           # the Claude run. Push retries are deliberately bounded — if
